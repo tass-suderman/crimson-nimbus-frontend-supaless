@@ -4,6 +4,7 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { ChakraProvider } from '@chakra-ui/react'
 import CrimsonOSMockStartup from './Components/Shared/CrimsonOSMockStartup';
+import './fonts/ChicagoFLF.ttf'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
