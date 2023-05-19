@@ -1,6 +1,7 @@
 import { Component, useEffect, useState}  from 'react';
 import { AbsoluteCenter, Box, Center, Container, Flex, Image, Text, VStack } from '@chakra-ui/react';
 import CrimsonOSLanding from '../Core/CrimsonOSLanding';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const startupStyle = 
 {
@@ -14,16 +15,14 @@ const startupStyle =
 export default function CrimsonOSMockStartup()
 {
 
-    const [redirect, setRedirect] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         setInterval(() => {
-            setRedirect(true)
+            navigate('login');
         }, 3000)
     }, [])
 
-    if (!redirect)
-    {
         return (
             <Container maxW="100%" h={"100vh"} padding={'0'} style={startupStyle}>
                 <Flex w={"100vw"} height={"100vh"} alignContent={"center"} justifyContent={"center"}>
@@ -37,14 +36,7 @@ export default function CrimsonOSMockStartup()
             </Container>
         )
         
-    }
 
-    else
-    {
-        return (
-            <CrimsonOSLanding/>
-        )
-    }
     
 
 

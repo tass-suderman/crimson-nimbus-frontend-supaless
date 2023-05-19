@@ -1,24 +1,16 @@
 import logo from './logo.svg';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import CrimsonOSMockStartup from './Components/Shared/CrimsonOSMockStartup';
 import './App.css';
+import CrimsonOSLanding from './Components/Core/CrimsonOSLanding';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+        <Route path='/' element={<CrimsonOSMockStartup/>}/>
+        <Route path='/gameplay/:sessionid' element={<CrimsonOSLanding gameplay={true}/>}/>
+        <Route path='/login' element={<CrimsonOSLanding gameplay={false}/>}/>
+    </Routes>
   );
 }
 

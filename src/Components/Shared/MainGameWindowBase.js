@@ -1,5 +1,5 @@
 import { Component, useEffect, useState}  from 'react';
-import { Center, Container, Text } from '@chakra-ui/react';
+import { Box, Center, Container, Text } from '@chakra-ui/react';
 
 const style = {
     minWidth: "1000px",
@@ -12,9 +12,22 @@ const style = {
 
 export default function MainGameWindowBase()
 {
+    const bgStyle = {
+        backgroundImage: "url('/images/crimsonos/crimson_signin.png')",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+    }
+
+
+
     return(
         <Container style={style}>
-            <img src='./images/crimsonos/CrimsonOS_Window_BASE.png' alt=""/>
+            <Box w='96.6%' h='90.4%' pos="absolute" top={'52.2px'} left={'15px'} p={4} color='white' style={bgStyle}>
+                <Box as='button' w={'25%'} pos="absolute" top={'85%'} left={'76%'} onClick={() => {window.location.replace("https://www.youtube.com/watch?v=dQw4w9WgXcQ");} }>
+                    <img src={'/images/crimsonos/discord_loginbutton.png'} alt="" />
+                </Box>
+            </Box>
+            <img src='/images/crimsonos/CrimsonOS_Window_BASE.png' alt=""/>
         </Container>
     )
 }
