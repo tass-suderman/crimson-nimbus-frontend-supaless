@@ -3,7 +3,6 @@ import { Box, Center, Container, Text } from '@chakra-ui/react';
 import { createClient } from '@supabase/supabase-js'
 import { Auth, ThemeSupa } from '@supabase/auth-ui-react'
 import { useNavigate, useParams } from 'react-router-dom';
-import discordAuth from '../../Controllers/DiscordAuthenticationHandler'
 
 const style = {
     minWidth: "1000px",
@@ -30,9 +29,17 @@ export default function LoginWindow()
     }
 
 
-    useEffect(() => {
+    useEffect(async () => {
         //Now, we configure with the supabase to authenticate you!
 
+                //Check whether or not you are already authenticated
+                await supabase.auth.getUser().then((value) => {
+                    if(value.data?.user)
+                    {
+                        window.location.replace("/gameplay");
+                    }
+                })
+                
         supabase.auth.onAuthStateChange(async (event) => {
             console.log(event)
             if (event == "SIGNED_IN")
@@ -46,6 +53,7 @@ export default function LoginWindow()
 
             }
         })
+
     }, [])
 
     async function discordAuth(supabase)
@@ -53,7 +61,8 @@ export default function LoginWindow()
         const { data, error } = await supabase.auth.signInWithOAuth({
             provider: 'discord',
             options: {
-                redirectTo: 'http://localhost:3000/gameplay',
+                redirectTo: 'https://the-legendary-cloud-guardian.uc.r.appspot.com/gameplay',
+                // redirectTo: 'http://localhost:3000/gameplay',
             },
         })
 

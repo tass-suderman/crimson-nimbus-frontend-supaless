@@ -1,8 +1,9 @@
 import { Component, useEffect, useState}  from 'react';
-import { Box, Center, Container, Text } from '@chakra-ui/react';
+import { Box, Center, Container, Text, Image, SimpleGrid } from '@chakra-ui/react';
 import { createClient } from '@supabase/supabase-js'
 import { Auth, ThemeSupa } from '@supabase/auth-ui-react'
 import { useNavigate } from 'react-router-dom';
+import CGGameplay from '../CGGameplay';
 
 
 const style = {
@@ -28,8 +29,15 @@ export default function GameplayWindow()
         backgroundSize: "cover",
     }
 
-    const [userdata, setData] = useState(null);
-    const [loading, setLoading] = useState(true)
+    const bgStyle2 = {
+        backgroundImage: "url('/images/crimsonos/crimsonuser.png')",
+        width: "22%",
+        height: "20%",
+    }
+
+    const [userdata, setData] = useState({});
+    const [loading, setLoading] = useState(false)
+    const [userProfile, setProfile] = useState({})
     const navigate = useNavigate();
 
     useEffect(async () => {
@@ -40,6 +48,8 @@ export default function GameplayWindow()
                 if(value.data?.user)
                 {
                     userData['discord'] = value.data.user
+                    setProfile({ avatar: value.data.user.user_metadata.avatar_url, fullname: value.data.user.user_metadata.full_name })
+                    console.log(value.data.user);
                 }
             })
 
@@ -59,20 +69,35 @@ export default function GameplayWindow()
             window.location.replace("/login");
         }
 
-        
 
-
+        // setData(bruh);
     }, [])
 
-
         return(
-            <Container style={style}>
-                <Box w='96.6%' h='90.4%' pos="absolute" top={'52.2px'} left={'15px'} p={4} color='white' style={bgStyle}>
-                    {!loading && <img src={userdata.discord.user_metadata.avatar_url}/>}
-                    {!loading && <Text>{userdata.discord.user_metadata.full_name}</Text>}
-                </Box>
-                <img src='/images/crimsonos/CrimsonOS_Window_BASE.png' alt=""/>
+            <Container maxW="100%" h={"100vh"}>
+                {!loading &&
+                    <div left={'15px'} style={{minWidth: "250px",
+                        minHeight: "200px",
+                        padding: "13px",
+                        display: "inline-block",
+                        position: "absolute",
+                        top: "72.3%",
+                        left: "76%"}}>
+                            
+                            <div style={{display: "flex", gap: "20px", alignItems:"center", justifyContent: "center", position: "absolute", top: "24.3%", left: "7%"}}>
+                                <Image borderRadius='full' boxSize='125px' objectFit='cover' src={userProfile.avatar} alt='Dan Abramov' />
+                                <Text fontSize='1xl'>
+                                    {userProfile.fullname}
+                                </Text>
+                            </div>
+
+
+                        <img src='/images/crimsonos/crimsonuser.png' alt=""/>
+                    </div>
+                }
+                <CGGameplay name={userProfile.fullname}/>
             </Container>
+            
         )
 
 
