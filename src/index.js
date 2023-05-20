@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import CrimsonOSMockStartup from './Components/Shared/CrimsonOSMockStartup';
 import './fonts/ChicagoFLF.ttf'
 import App from './App'
+import 'animate.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

@@ -8,7 +8,7 @@ function App() {
   return (
     <Routes>
         <Route path='/' element={<CrimsonOSMockStartup/>}/>
-        <Route path='/gameplay/:sessionid' element={<CrimsonOSLanding gameplay={true}/>}/>
+        <Route path='/gameplay' element={<CrimsonOSLanding gameplay={true}/>}/>
         <Route path='/login' element={<CrimsonOSLanding gameplay={false}/>}/>
     </Routes>
   );
