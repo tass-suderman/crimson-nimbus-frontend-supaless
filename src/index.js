@@ -8,6 +8,9 @@ import CrimsonOSMockStartup from './Components/Shared/CrimsonOSMockStartup';
 import './fonts/ChicagoFLF.ttf'
 import App from './App'
 import 'animate.css';
+import axios from 'axios';
+
+// axios.defaults.headers.common['Authorization'] = `${process.env.}`
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

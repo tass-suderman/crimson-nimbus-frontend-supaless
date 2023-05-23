@@ -4,6 +4,8 @@ import { createClient } from '@supabase/supabase-js'
 import { Auth, ThemeSupa } from '@supabase/auth-ui-react'
 import { useNavigate } from 'react-router-dom';
 import CGGameplay from '../CGGameplay';
+import axios from 'axios';
+
 
 
 const style = {
@@ -36,11 +38,11 @@ export default function GameplayWindow()
     }
 
     const [userdata, setData] = useState({});
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
     const [userProfile, setProfile] = useState({})
     const navigate = useNavigate();
 
-    useEffect(async () => {
+    useEffect(() => {
         async function getUserData()
         {
             const userData = {}
@@ -49,32 +51,43 @@ export default function GameplayWindow()
                 {
                     userData['discord'] = value.data.user
                     setProfile({ avatar: value.data.user.user_metadata.avatar_url, fullname: value.data.user.user_metadata.full_name })
-                    console.log(value.data.user);
                 }
             })
 
             await supabase.auth.getSession().then((value) => {
-                userData['session'] = value
+                console.log(value.data.session);
+                userData['session'] = value.data.session
+
+                 // axios.defaults.headers.common['Authorization'] = value.data.session.provider_token
             })
 
-            return userData;
+
+            setData({discord: userData.discord, session: userData.session})
+
+            if (!userData.discord)
+            {
+                window.location.replace("/login");
+            }
+
+
+            setLoading(false);
         };
 
-        const data = await getUserData();
-        setData(data);
-        setLoading(false);
-
-        if (!data.discord)
-        {
-            window.location.replace("/login");
-        }
+        getUserData();
 
 
-        // setData(bruh);
     }, [])
 
         return(
             <Container maxW="100%" h={"100vh"}>
+                { loading && 
+                
+                    <div style={{display: "flex", gap: "20px", alignItems:"center", justifyContent: "center", position: "absolute", top: "35%", left: "32%", zIndex: 100}}>
+                        <img src='/images/crimsonos/crimsonos_retriving.gif' alt=""/>
+                    </div>
+                
+                }
+
                 {!loading &&
                     <div left={'15px'} style={{minWidth: "250px",
                         minHeight: "200px",
@@ -85,7 +98,7 @@ export default function GameplayWindow()
                         left: "76%"}}>
                             
                             <div style={{display: "flex", gap: "20px", alignItems:"center", justifyContent: "center", position: "absolute", top: "24.3%", left: "7%"}}>
-                                <Image borderRadius='full' boxSize='125px' objectFit='cover' src={userProfile.avatar} alt='Dan Abramov' />
+                                <Image borderRadius='full' boxSize='125px' objectFit='cover' src={userProfile.avatar} />
                                 <Text fontSize='1xl'>
                                     {userProfile.fullname}
                                 </Text>
