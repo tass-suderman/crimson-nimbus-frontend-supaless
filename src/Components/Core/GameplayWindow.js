@@ -55,7 +55,7 @@ export default function GameplayWindow()
             })
 
             await supabase.auth.getSession().then((value) => {
-                console.log(value.data.session);
+                console.log(value.data);
                 userData['session'] = value.data.session
 
                  // axios.defaults.headers.common['Authorization'] = value.data.session.provider_token
