@@ -25,6 +25,7 @@ export default function CGGameplay(props)
     const [curVillianRoll, setVillianRoll] = useState([])
     
 
+
     // Get stuff from the database.
     async function villianRoll()
     {
@@ -123,6 +124,8 @@ export default function CGGameplay(props)
        //For re-rolls and current character selection
        const [rerollChars, setChars] = useState([]);
        const [currentArrayIndex, setIndex] = useState(0);
+
+       //Setting up google cloud bucket
 
         useEffect(() => {
             async function fetchChars()
@@ -258,10 +261,27 @@ export default function CGGameplay(props)
             setPreview(URL.createObjectURL(e.target.files[0]));
         }
 
-        if (!loading)
-        {
-            console.log(rerollChars[currentArrayIndex].imagePrefix)
-        }
+        function handleSubmit(event) {
+            event.preventDefault();
+
+            setLoading(true)
+
+            const newUserData = {
+                name: event.target.name.value,
+                weight: event.target.weight.value,
+                height: event.target.height.value,
+                intelligence: event.target.intelligence.value,
+                strength: event.target.strength.value,
+                durability: event.target.durability.value,
+                combat: event.target.combat.value,
+                power: event.target.power.value,
+                speed: event.target.speed.value,
+                url: event.target.avatar.files[0]
+            }
+
+            console.log(newUserData)
+
+         }
 
 
         return (
@@ -281,18 +301,18 @@ export default function CGGameplay(props)
 
                 {
                     !loading  &&
-<Box id={'FORM CONTROL'} w='100%' >
+                    <Box id={'FORM CONTROL'} w='100%' >
                         <VStack mt={4}>
-                            <Image src={preview == null ? '/images/crimsonos/game/default-pic.png' : preview} boxSize='120px'  borderRadius='full' objectFit='cover'/>
-                            <form style={{display: "flex", gap: "25px", flexWrap: "wrap", width: "80%"}} >
+                            <Image src={preview == null ? '/images/crimsonos/game/default-pic.png' : preview} boxSize='95px'  borderRadius='full' objectFit='cover'/>
+                            <form style={{display: "flex", gap: "25px", flexWrap: "wrap", width: "80%"}} onSubmit={handleSubmit}>
                                 <SimpleGrid columns={2} spacing={10}>
-                                    <FormControl>
+                                    <FormControl isRequired>
                                         <FormLabel>Character name</FormLabel>
-                                        <Input type="text" placeholder="e.g. Cloud Man" />
+                                        <Input type="text" name='name' placeholder="e.g. Cloud Man" />
                                     </FormControl>
-                                    <FormControl>
+                                    <FormControl isRequired>
                                         <FormLabel>Character Avatar</FormLabel>
-                                        <Input type="file" onChange={onChangePreview}/>
+                                        <Input type="file" name='avatar' onChange={onChangePreview}/>
                                     </FormControl>
                                 </SimpleGrid>
                                 {/* FOR GRABBING POWER  */}
@@ -306,7 +326,9 @@ export default function CGGameplay(props)
                                              }} >
                                                 <img src={disableCombat ? '/images/crimsonos/game/SELECTION/combat2.png' : '/images/crimsonos/game/SELECTION/combat1.png'}/>
                                             </Box>  
-                                            <Input type='text' disabled={disableCombat} value={infCombat} placeholder=''/>
+                                            <FormControl isRequired>
+                                                <Input type='text' name='combat' disabled={disableCombat} value={infCombat} placeholder=''/>
+                                            </FormControl>
                                         </Flex>
                                         <Flex gap={'25px'}>
                                             <Box as='button' type={'button'} disabled={disableDurability} onClick={() => {
@@ -316,7 +338,10 @@ export default function CGGameplay(props)
                                              }} >
                                                 <img src={disableDurability ? '/images/crimsonos/game/SELECTION/Durability2.png' : '/images/crimsonos/game/SELECTION/Durability1.png'}/>
                                             </Box>  
-                                            <Input type='text' disabled={disableDurability} value={infDurability} placeholder=''/>
+                                            <FormControl isRequired>
+                                                <Input type='text' name='durability' disabled={disableDurability} value={infDurability} placeholder=''/>
+                                            </FormControl>
+
                                         </Flex>
                                         <Flex gap={'25px'}>
                                             <Box as='button' type={'button'} disabled={disableHeight} onClick={() => {
@@ -326,7 +351,9 @@ export default function CGGameplay(props)
                                              }} >
                                                 <img src={disableHeight ? '/images/crimsonos/game/SELECTION/height2.png' : '/images/crimsonos/game/SELECTION/height1.png'}/>
                                             </Box>  
-                                            <Input type='text' disabled={disableHeight} value={infHeight} placeholder=''/>
+                                            <FormControl isRequired>
+                                                <Input type='text' name='height' disabled={disableHeight} value={infHeight} placeholder=''/>
+                                            </FormControl>
                                         </Flex>
                                         <Flex gap={'25px'}>
                                             <Box as='button' type={'button'} disabled={disableIntelligence} onClick={() => {
@@ -336,7 +363,9 @@ export default function CGGameplay(props)
                                              }} >
                                                 <img src={disableIntelligence ? '/images/crimsonos/game/SELECTION/intelligence2.png' : '/images/crimsonos/game/SELECTION/intelligence1.png'}/>
                                             </Box>  
-                                            <Input type='text' disabled={disableIntelligence} value={infIntelligence} placeholder=''/>
+                                            <FormControl isRequired>
+                                                <Input type='text' name='intelligence' disabled={disableIntelligence} value={infIntelligence} placeholder=''/>
+                                            </FormControl>
                                         </Flex>
 
                                         <Flex gap={'25px'}>
@@ -347,7 +376,9 @@ export default function CGGameplay(props)
                                              }} >
                                                 <img src={disablePower ? '/images/crimsonos/game/SELECTION/power2.png' : '/images/crimsonos/game/SELECTION/power1.png'}/>
                                             </Box>  
-                                            <Input type='text' disabled={disablePower} value={infPower} placeholder=''/>
+                                            <FormControl isRequired>
+                                                <Input type='text' name='power' disabled={disablePower} value={infPower} placeholder=''/>
+                                            </FormControl>
                                         </Flex>
 
                                         <Flex gap={'25px'}>
@@ -358,7 +389,7 @@ export default function CGGameplay(props)
                                              }} >
                                                 <img src={disableSpeed ? '/images/crimsonos/game/SELECTION/speed2.png' : '/images/crimsonos/game/SELECTION/speed1.png'}/>
                                             </Box>  
-                                            <Input type='text' disabled={disableSpeed} value={infSpeed} placeholder=''/>
+                                            <Input type='text' name='speed' disabled={disableSpeed} value={infSpeed} placeholder=''/>
                                         </Flex>
                                         <Flex gap={'25px'}>
                                             <Box as='button' type={'button'} disabled={disableStrength} onClick={() => {
@@ -368,7 +399,9 @@ export default function CGGameplay(props)
                                              }} >
                                                 <img src={disableStrength ? '/images/crimsonos/game/SELECTION/Strength2.png' : '/images/crimsonos/game/SELECTION/Strength1.png'}/>
                                             </Box>  
-                                            <Input type='text' disabled={disableStrength} value={infStrength} placeholder=''/>
+                                            <FormControl isRequired>
+                                                <Input type='text' name='strength' disabled={disableStrength} value={infStrength} placeholder=''/>
+                                            </FormControl>
                                         </Flex>
                                         <Flex gap={'25px'}>
                                             <Box as='button' type={'button'} disabled={disableWeight} onClick={() => {
@@ -377,8 +410,10 @@ export default function CGGameplay(props)
                                                 setIndex(currentArrayIndex == 7 ? currentArrayIndex :currentArrayIndex + 1);
                                              }} >
                                                 <img src={disableWeight ? '/images/crimsonos/game/SELECTION/weight2.png' : '/images/crimsonos/game/SELECTION/weight1.png'}/>
-                                            </Box>  
-                                            <Input type='text' disabled={disableWeight} value={infWeight} placeholder=''/>
+                                            </Box>
+                                            <FormControl isRequired>
+                                                <Input type='text' name='weight' disabled={disableWeight} value={infWeight} placeholder=''/>
+                                            </FormControl>
                                         </Flex>
                                     </VStack>
                                     <VStack alignContent={'center'} justifyContent={'center'}  mb={'50'}>
@@ -398,10 +433,16 @@ export default function CGGameplay(props)
                                             <h1 style={{textShadow: "3px 3px black"}} >SPEED: {rerollChars[currentArrayIndex].speed}</h1>
                                             </VStack>
                                         </HStack>
+                                        
                                     </VStack>
                                 </SimpleGrid>
                                 
+                                <Box as='button' position={'absolute'} top={'93%'} left={'42%'} type={'submit'} >
+                                    <img src={'/images/crimsonos/game/SELECTION/transmitbtn.png'} style={{width: "30%"}}/>
+                                </Box> 
                             </form>
+
+
                         </VStack>
                     </Box>
                     
