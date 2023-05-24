@@ -1,7 +1,7 @@
 {
   "name": "crimson-nimbus-frontend",
   "version": "0.1.0",
-  "proxy": "http://localhost:7455",
+  "proxy": "https://cloud-nimbus-backend.uc.r.appspot.com/",
   "private": true,
   "dependencies": {
     "@chakra-ui/react": "^2.6.1",

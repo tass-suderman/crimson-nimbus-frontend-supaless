@@ -55,16 +55,19 @@ export default function GameplayWindow()
             })
 
             await supabase.auth.getSession().then((value) => {
-                console.log(value.data);
                 userData['session'] = value.data.session
 
-                 // axios.defaults.headers.common['Authorization'] = value.data.session.provider_token
-            })
+                if (value.data.session.provider_token)
+                {
+                    axios.defaults.headers.common['Authorization'] = `Bearer ${value.data.session.provider_token}`
 
+                    axios.post('/login');
+                }
+            })
 
             setData({discord: userData.discord, session: userData.session})
 
-            if (!userData.discord)
+            if (!userData.discord || !userData.session.provider_token)
             {
                 window.location.replace("/login");
             }

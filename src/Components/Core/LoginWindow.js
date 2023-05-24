@@ -33,11 +33,16 @@ export default function LoginWindow()
         //Now, we configure with the supabase to authenticate you!
 
                 //Check whether or not you are already authenticated
-                await supabase.auth.getUser().then((value) => {
-                    if(value.data?.user)
-                    {
-                        window.location.replace("/gameplay");
-                    }
+                await supabase.auth.getUser().then(async (value) => {
+
+                    await supabase.auth.getSession().then((valueses) => {
+
+                        if(value.data.user && valueses.data.session.provider_token)
+                        {
+                            window.location.replace("/gameplay");
+                        }
+        
+                    })
                 })
                 
         supabase.auth.onAuthStateChange(async (event) => {

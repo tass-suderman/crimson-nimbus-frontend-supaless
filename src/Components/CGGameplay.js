@@ -1,5 +1,5 @@
 import { Component, useEffect, useState}  from 'react';
-import { Box, Center, Container, Text, HStack, Stack, VStack, Image, Flex, Heading, FormControl, FormLabel, Input, Button, SimpleGrid } from '@chakra-ui/react';
+import { Box, Center, Container, Text, HStack, Stack, VStack, Image, Flex, Heading, FormControl, FormLabel, Input, Button, SimpleGrid, Spacer } from '@chakra-ui/react';
 import axios from 'axios';
 import { Form } from 'react-router-dom';
 
@@ -22,20 +22,7 @@ export default function CGGameplay(props)
     const [viewBattle, setViewBattle] = useState(false);
     const [viewScore, setViewScore] = useState(false);
     const [viewChar, setViewChar] = useState(false);
-    const [curVillianRoll, setVillianRoll] = useState([])
     
-
-
-    // Get stuff from the database.
-    async function villianRoll()
-    {
-        axios.get('http://localhost:7455/character/newroll', {headers: {"Authorization": "MTEwOTUxMDcyNDExMzQwODA0MQ.GR4UrB.lzqoBesvqlq2KtUSaTNJi6OpRhrSyNeUd98yq0" }})
-        .then(function (response)
-        {
-            console.log(response.data)
-            setVillianRoll(response.data)
-        })
-    }
     
     useEffect(() => {
         
@@ -64,19 +51,40 @@ export default function CGGameplay(props)
     function MenuPage()
     {
         const [numOfCustomChar, setCustomChar] = useState(0);
+        const [loading, setLoading] = useState(true);
 
         useEffect(() => {
         
             // Get stuff from the database. Especially determining how many characters that this user has created
-            setCustomChar(0); // Just a test
+            async function determineCustomCharNum()
+            {
+                axios.get('/characters/user').then(function (response)
+                {
+                    setCustomChar(response.data.length) 
+                    setLoading(false);
+                })
+            }
+
+            determineCustomCharNum();
+
         }, [])
 
 
         return (
+
             <Box w='96.6%' h='90.4%' pos="absolute" top={'52.2px'} left={'15px'} p={4} color='white' style={{ 
                 backgroundImage: "url('/images/crimsonos/game/cg_menu.png')",
             }}>
 
+            {
+                loading &&
+                <div style={{display: "flex", gap: "20px", alignItems:"center", justifyContent: "center", position: "absolute", top: "32%", left: "18%", zIndex: 100}}>
+                    <img src='/images/crimsonos/crimsonos_processing.gif' alt=""/>
+                </div>
+            }
+
+            {
+                !loading &&
                 <HStack spacing='24px' ml={'20%'} mt={'40%'} >
                     <Box as='button' onClick={() => {setMenu(false); setViewChar(true);} }>
                         <img src={'/images/crimsonos/game/menubutton/newcharbtn.png'} alt="" />
@@ -89,7 +97,10 @@ export default function CGGameplay(props)
                     <Box as='button' onClick={() => {setMenu(false); setViewScore(true); } }>
                         <img src={'/images/crimsonos/game/menubutton/scorebtn.png'} alt="" />
                     </Box>
-                </HStack>    
+                </HStack> 
+            }
+
+                   
             </Box>
         )
     }
@@ -100,6 +111,9 @@ export default function CGGameplay(props)
     {
        const [loading, setLoading] = useState(true);
        const [preview, setPreview] = useState(null);
+       const [success, setSuccess] = useState(false);
+       const [transWin, setTransWin] = useState(false);
+       const [transmit, setTrans] = useState('/images/crimsonos/crimsonos_transmit.gif')
        
        //usestate for each individual attrbiute
        const [disableCombat, setDisCombat] = useState(false);
@@ -131,128 +145,15 @@ export default function CGGameplay(props)
             async function fetchChars()
             {
                 //fetch stuff goes here....annddddddd
+                axios.get('/character/newroll').then(function (response) {
+                    setChars(response.data);
+                    setLoading(false)
+                });
 
-                //Sampe data
-                const data = [
-                    {
-                        "id": 689,
-                        "name": "Venom III",
-                        "weight": 334,
-                        "height": 229,
-                        "intelligence": 63,
-                        "strength": 73,
-                        "durability": 90,
-                        "combat": 56,
-                        "power": 73,
-                        "speed": 35,
-                        "imageSuffix": "689-venom-iii.jpg",
-                        "imagePrefix": "https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/images/"
-                    },
-                    {
-                        "id": 538,
-                        "name": "Ra's Al Ghul",
-                        "weight": 97,
-                        "height": 193,
-                        "intelligence": 100,
-                        "strength": 28,
-                        "durability": 42,
-                        "combat": 100,
-                        "power": 27,
-                        "speed": 32,
-                        "imageSuffix": "538-ras-al-ghul.jpg",
-                        "imagePrefix": "https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/images/"
-                    },
-                    {
-                        "id": 222,
-                        "name": "Doctor Doom",
-                        "weight": 187,
-                        "height": 201,
-                        "intelligence": 100,
-                        "strength": 32,
-                        "durability": 100,
-                        "combat": 84,
-                        "power": 100,
-                        "speed": 20,
-                        "imageSuffix": "222-doctor-doom.jpg",
-                        "imagePrefix": "https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/images/"
-                    },
-                    {
-                        "id": 230,
-                        "name": "Doomsday",
-                        "weight": 412,
-                        "height": 244,
-                        "intelligence": 75,
-                        "strength": 100,
-                        "durability": 100,
-                        "combat": 90,
-                        "power": 100,
-                        "speed": 67,
-                        "imageSuffix": "230-doomsday.jpg",
-                        "imagePrefix": "https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/images/"
-                    },
-                    {
-                        "id": 63,
-                        "name": "Batgirl",
-                        "weight": 57,
-                        "height": 170,
-                        "intelligence": 88,
-                        "strength": 11,
-                        "durability": 40,
-                        "combat": 90,
-                        "power": 34,
-                        "speed": 33,
-                        "imageSuffix": "63-batgirl.jpg",
-                        "imagePrefix": "https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/images/"
-                    },
-                    {
-                        "id": 642,
-                        "name": "Superboy-Prime",
-                        "weight": 77,
-                        "height": 180,
-                        "intelligence": 94,
-                        "strength": 100,
-                        "durability": 100,
-                        "combat": 85,
-                        "power": 100,
-                        "speed": 100,
-                        "imageSuffix": "642-superboy-prime.jpg",
-                        "imagePrefix": "https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/images/"
-                    },
-                    {
-                        "id": 350,
-                        "name": "Jack of Hearts",
-                        "weight": 79,
-                        "height": 155,
-                        "intelligence": 63,
-                        "strength": 55,
-                        "durability": 30,
-                        "combat": 30,
-                        "power": 77,
-                        "speed": 100,
-                        "imageSuffix": "350-jack-of-hearts.jpg",
-                        "imagePrefix": "https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/images/"
-                    },
-                    {
-                        "id": 20,
-                        "name": "Amazo",
-                        "weight": 173,
-                        "height": 257,
-                        "intelligence": 63,
-                        "strength": 100,
-                        "durability": 100,
-                        "combat": 100,
-                        "power": 100,
-                        "speed": 83,
-                        "imageSuffix": "20-amazo.jpg",
-                        "imagePrefix": "https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/images/"
-                    }
-                ];
-                setChars(data);
             }
 
 
             fetchChars();
-            setLoading(false)
             
         }, [])
 
@@ -261,26 +162,28 @@ export default function CGGameplay(props)
             setPreview(URL.createObjectURL(e.target.files[0]));
         }
 
-        function handleSubmit(event) {
+        async function handleSubmit(event) {
             event.preventDefault();
 
-            setLoading(true)
+            setTransWin(true)
 
             const newUserData = {
-                name: event.target.name.value,
-                weight: event.target.weight.value,
-                height: event.target.height.value,
-                intelligence: event.target.intelligence.value,
-                strength: event.target.strength.value,
-                durability: event.target.durability.value,
-                combat: event.target.combat.value,
-                power: event.target.power.value,
-                speed: event.target.speed.value,
-                url: event.target.avatar.files[0]
+                name:  event.target.name.value,
+                weight: parseInt(event.target.weight.value),
+                height: parseInt(event.target.height.value),
+                intelligence: parseInt(event.target.intelligence.value),
+                strength: parseInt(event.target.strength.value),
+                durability: parseInt(event.target.durability.value),
+                combat: parseInt(event.target.combat.value),
+                power: parseInt(event.target.power.value),
+                speed: parseInt(event.target.speed.value),
+                url: 'boogle'
             }
 
-            console.log(newUserData)
-
+            await axios.post('/character/new', newUserData).then(() => {
+                setTrans('/images/crimsonos/trasnmit6.png');
+                setSuccess(true);
+            });
          }
 
 
@@ -293,6 +196,20 @@ export default function CGGameplay(props)
                 </Box>  
 
                 {
+                        (!loading && transWin) &&
+                        <div style={{display: "flex", gap: "20px", alignItems:"center", justifyContent: "center", position: "absolute", top: "32%", left: "18%", zIndex: 100}}>
+                            {
+                                success &&
+                                <Box as='button' onClick={() => {setViewChar(false); setViewBattle(true) } } position={'absolute'} left={'35%'} bottom={'10%'}>
+                                    <img src={'/images/crimsonos/battleupbtn.png'} alt="" style={{width: "40%"}}/>
+                                </Box>  
+
+                            }
+                            <img src={transmit} alt=""/>
+                        </div>
+                }
+
+                {
                     loading &&
                     <div style={{display: "flex", gap: "20px", alignItems:"center", justifyContent: "center", position: "absolute", top: "32%", left: "18%", zIndex: 100}}>
                         <img src='/images/crimsonos/crimsonos_processing.gif' alt=""/>
@@ -300,8 +217,11 @@ export default function CGGameplay(props)
                 }
 
                 {
-                    !loading  &&
+                   
+                    (!loading && !transWin)  &&
+                    
                     <Box id={'FORM CONTROL'} w='100%' >
+ 
                         <VStack mt={4}>
                             <Image src={preview == null ? '/images/crimsonos/game/default-pic.png' : preview} boxSize='95px'  borderRadius='full' objectFit='cover'/>
                             <form style={{display: "flex", gap: "25px", flexWrap: "wrap", width: "80%"}} onSubmit={handleSubmit}>
@@ -312,7 +232,7 @@ export default function CGGameplay(props)
                                     </FormControl>
                                     <FormControl isRequired>
                                         <FormLabel>Character Avatar</FormLabel>
-                                        <Input type="file" name='avatar' onChange={onChangePreview}/>
+                                        <Input type="file" accept='image/png, image/jpeg' name='avatar' onChange={onChangePreview}/>
                                     </FormControl>
                                 </SimpleGrid>
                                 {/* FOR GRABBING POWER  */}
@@ -437,7 +357,7 @@ export default function CGGameplay(props)
                                     </VStack>
                                 </SimpleGrid>
                                 
-                                <Box as='button' position={'absolute'} top={'93%'} left={'42%'} type={'submit'} >
+                                <Box as='button' position={'absolute'} top={'93%'} left={'42%'} type={'submit'} disabled={transWin}>
                                     <img src={'/images/crimsonos/game/SELECTION/transmitbtn.png'} style={{width: "30%"}}/>
                                 </Box> 
                             </form>
@@ -460,12 +380,34 @@ export default function CGGameplay(props)
         {
            
             const [loading, setLoading] = useState(true);
-    
+            const [charsToFight, setChars] = useState([])
+            const [yourChars, setYoursChars] = useState([])
+            const [currentArrayIndex, setIndex] = useState(0);
+
             useEffect(() => {
-    
+                async function fetchChars()
+                {
+                    await axios.get('/character/newroll/')
+                    .then(function (response)
+                    {
+                            setChars(response.data) 
+                    })
+
+                    await axios.get('/characters/user').then(function (response)
+                    {
+                        console.log(response.data)
+                        setYoursChars(response.data) 
+                        
+                    })
+
+                    setLoading(false);
+                }
+
+                fetchChars();
+
             }, [])
     
-    
+
             return (
                 <Box w='96.6%' h='90.4%' pos="absolute" top={'52.2px'} left={'15px'} p={4} color='white' style={{ 
                     backgroundImage: "url('/images/crimsonos/game/battleground_bg.png')",
@@ -479,6 +421,90 @@ export default function CGGameplay(props)
                         <Box as='button' onClick={() => {setMenu(true); setViewBattle(false);} }>
                             <img src={'/images/crimsonos/game/xbutton.png'} alt="" />
                         </Box>  
+
+                    {
+                        !loading &&
+
+                        <Container w={'100%'} m={0}>
+                            <HStack  w={'100%'}>
+                                <VStack alignContent={'center'} justifyContent={'center'} mt={'70'} >
+                                        <Image src={`${charsToFight[currentArrayIndex].imagePrefix}/lg/${charsToFight[currentArrayIndex].imageSuffix}`} borderRadius='full' boxSize='200px'/>
+                                        <HStack gap={'25'}>
+                                            <VStack w={'auto'}>
+                                                <h1 style={{textShadow: "3px 3px black"}} >WEIGHT: {charsToFight[currentArrayIndex].weight}</h1>
+                                                <h1 style={{textShadow: "3px 3px black"}} >HEIGHT: {charsToFight[currentArrayIndex].height}</h1>
+                                                <h1 style={{textShadow: "3px 3px black"}} >INTELLIGENCE: {charsToFight[currentArrayIndex].intelligence}</h1>
+                                                <h1 style={{textShadow: "3px 3px black"}} >STRENGTH: {charsToFight[currentArrayIndex].strength}</h1>
+                                            </VStack>
+                                            <VStack w={'auto'}>
+                                            <h1 style={{textShadow: "3px 3px black"}} >DURABILITY: {charsToFight[currentArrayIndex].durability}</h1>
+                                            <h1 style={{textShadow: "3px 3px black"}} >COMBAT: {charsToFight[currentArrayIndex].combat}</h1>
+                                            <h1 style={{textShadow: "3px 3px black"}} >POWER: {charsToFight[currentArrayIndex].power}</h1>
+                                            <h1 style={{textShadow: "3px 3px black"}} >SPEED: {charsToFight[currentArrayIndex].speed}</h1>
+                                            </VStack>
+                                        </HStack>
+                                        <Spacer/>
+                                        <Spacer/>
+                                        <Spacer/>
+                                        <Spacer/>
+                                        <Spacer/>
+                                        <Spacer/>
+                                        <Text fontSize='4xl'  style={{textShadow: "3px 3px black"}}>{charsToFight[currentArrayIndex].name}</Text>
+                                        
+                                </VStack>
+                                
+                                <VStack alignContent={'center'} justifyContent={'center'} pt={'71'} >
+                                    <HStack>
+                                        <Box as='button' onClick={() => {setIndex(currentArrayIndex != 0 ? currentArrayIndex - 1 : currentArrayIndex)} }>
+                                            <img src={'/images/crimsonos/game/lbutton.png'} alt="" />
+                                        </Box>  
+                                        <Image src={`${charsToFight[currentArrayIndex].imagePrefix}/lg/${charsToFight[currentArrayIndex].imageSuffix}`} borderRadius='full' boxSize='200px'/>
+                                        <Box as='button' onClick={() => {setIndex(currentArrayIndex != charsToFight.length - 1 ? currentArrayIndex + 1 : currentArrayIndex)} }>
+                                            <img src={'/images/crimsonos/game/rbutton.png'} alt="" />
+                                        </Box>  
+                                    </HStack>
+                                        
+                                        <HStack gap={'25'}>
+                                            <VStack w={'auto'}>
+                                                <h1 style={{textShadow: "3px 3px black"}} >WEIGHT: {charsToFight[currentArrayIndex].weight}</h1>
+                                                <h1 style={{textShadow: "3px 3px black"}} >HEIGHT: {charsToFight[currentArrayIndex].height}</h1>
+                                                <h1 style={{textShadow: "3px 3px black"}} >INTELLIGENCE: {charsToFight[currentArrayIndex].intelligence}</h1>
+                                                <h1 style={{textShadow: "3px 3px black"}} >STRENGTH: {charsToFight[currentArrayIndex].strength}</h1>
+                                            </VStack>
+                                            <VStack w={'auto'}>
+                                            <h1 style={{textShadow: "3px 3px black"}} >DURABILITY: {charsToFight[currentArrayIndex].durability}</h1>
+                                            <h1 style={{textShadow: "3px 3px black"}} >COMBAT: {charsToFight[currentArrayIndex].combat}</h1>
+                                            <h1 style={{textShadow: "3px 3px black"}} >POWER: {charsToFight[currentArrayIndex].power}</h1>
+                                            <h1 style={{textShadow: "3px 3px black"}} >SPEED: {charsToFight[currentArrayIndex].speed}</h1>
+                                            </VStack>
+                                        </HStack>
+                                        <Spacer/>
+                                        <Spacer/>
+                                        <Spacer/>
+                                        <Spacer/>
+                                        <Spacer/>
+                                        <Spacer/>
+                                        <Text fontSize='4xl'  style={{textShadow: "3px 3px black"}}>{charsToFight[currentArrayIndex].name}</Text>
+                                        
+                                </VStack>
+
+                            
+                            
+
+
+
+
+
+                                    
+                            </HStack>
+                        </Container>
+
+
+
+
+
+                    }
+                        
                 </Box>
             )
         }
@@ -487,6 +513,7 @@ export default function CGGameplay(props)
     function ScorePage()
     {
         const [loading, setLoading] = useState(true);
+        
 
         useEffect(() => {
             
