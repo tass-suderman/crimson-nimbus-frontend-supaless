@@ -58,7 +58,9 @@ export default function GameplayWindow()
                 userData['session'] = value.data.session
 
                 if (value.data.session.provider_token)
-                {
+                {   
+                    console.log(value.data.session.provider_token)
+
                     axios.defaults.headers.common['Authorization'] = `Bearer ${value.data.session.provider_token}`
 
                     axios.post('/login');
