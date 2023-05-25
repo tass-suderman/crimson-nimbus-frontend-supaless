@@ -59,11 +59,10 @@ export default function GameplayWindow()
 
                 if (value.data.session.provider_token)
                 {   
-                    console.log(value.data.session.provider_token)
 
                     axios.defaults.headers.common['Authorization'] = `Bearer ${value.data.session.provider_token}`
 
-                    axios.post('/login');
+                    axios.post('https://cloud-nimbus-backend.uc.r.appspot.com/login');
                 }
             })
 

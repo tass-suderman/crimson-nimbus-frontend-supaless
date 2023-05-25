@@ -66,8 +66,8 @@ export default function LoginWindow()
         const { data, error } = await supabase.auth.signInWithOAuth({
             provider: 'discord',
             options: {
-              redirectTo: 'https://the-legendary-cloud-guardian.uc.r.appspot.com/gameplay',
-                //redirectTo: 'http://localhost:3000/gameplay',
+            //   redirectTo: 'https://the-legendary-cloud-guardian.uc.r.appspot.com/gameplay',
+                redirectTo: 'http://localhost:3000/gameplay',
             },
         })
 

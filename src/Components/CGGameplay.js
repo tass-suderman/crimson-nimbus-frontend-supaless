@@ -58,8 +58,9 @@ export default function CGGameplay(props)
             // Get stuff from the database. Especially determining how many characters that this user has created
             async function determineCustomCharNum()
             {
-                axios.get('/characters/user').then(function (response)
+                axios.get('https://cloud-nimbus-backend.uc.r.appspot.com/characters/user').then(function (response)
                 {
+                    console.log(response);
                     const data= response.data.filter(char => char.isActive)
                     setCustomChar(data.length) 
                     setLoading(false);
@@ -146,7 +147,7 @@ export default function CGGameplay(props)
             async function fetchChars()
             {
                 //fetch stuff goes here....annddddddd
-                axios.get('/character/newroll').then(function (response) {
+                axios.get('https://cloud-nimbus-backend.uc.r.appspot.com/character/newroll').then(function (response) {
                     setChars(response.data);
                     setLoading(false)
                 });
@@ -181,7 +182,7 @@ export default function CGGameplay(props)
                 url: event.target.avatar.value
             }
 
-            await axios.post('/character/new', newUserData).then(() => {
+            await axios.post('https://cloud-nimbus-backend.uc.r.appspot.com/character/new', newUserData).then(() => {
                 setTrans('/images/crimsonos/trasnmit6.png');
                 setSuccess(true);
             });
@@ -392,7 +393,7 @@ export default function CGGameplay(props)
             const [viewAnimation, setAnimation] = useState(false);
 
             useEffect(() => {
-                axios.get('/characters/user').then(function (response)
+                axios.get('https://cloud-nimbus-backend.uc.r.appspot.com/characters/user').then(function (response)
                 {
                     console.log(response)
                     const data= response.data.filter(char => char.isActive)
@@ -510,7 +511,7 @@ export default function CGGameplay(props)
                     const [battleInfo, setBattleInfo] = useState({});
 
                     useEffect(() => {
-                        axios.put(`/character/battle/${curUserChar.id}`).then(function (response)
+                        axios.put(`https://cloud-nimbus-backend.uc.r.appspot.com/character/battle/${curUserChar.id}`).then(function (response)
                         {
                             setBattleInfo(response.data);
                             console.log(response.data);
