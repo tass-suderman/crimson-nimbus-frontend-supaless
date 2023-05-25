@@ -57,12 +57,17 @@ export default function GameplayWindow()
             await supabase.auth.getSession().then((value) => {
                 userData['session'] = value.data.session
 
-                if (value.data.session.provider_token)
+                if (value.data.session?.provider_token)
                 {   
 
                     axios.defaults.headers.common['Authorization'] = `Bearer ${value.data.session.provider_token}`
 
                     axios.post('https://cloud-nimbus-backend.uc.r.appspot.com/login');
+                }
+
+                else
+                {
+                    window.location.replace("/login");
                 }
             })
 

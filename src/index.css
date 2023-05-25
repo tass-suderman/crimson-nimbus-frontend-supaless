@@ -32,6 +32,22 @@ code {
     animation-fill-mode: forwards;
 }
 
+/* #villian {
+  z-index: 1000;
+  position: absolute;
+  opacity: 0;
+  animation: entrance-fade-in-right 1.0s cubic-bezier(0.86, 0, 0.07, 1);
+  animation-fill-mode: forwards;
+} */
+
+#flashbang
+{
+    opacity: 0;
+    animation: fadeIn 0.2s cubic-bezier(0.86, 0, 0.07, 1);
+    animation-fill-mode: forwards;
+}
+
+
 @keyframes entrance-fade-in {
   from {
     opacity: 0;
@@ -39,9 +55,29 @@ code {
   }
   to {
     opacity: 1;
-    transform: translateY(80%);
+    transform: translateY(75%);
   }
 }
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+/* 
+@keyframes entrance-fade-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(80%);
+  }
+} */
 
 
 

@@ -22,6 +22,8 @@ export default function CGGameplay(props)
     const [viewBattle, setViewBattle] = useState(false);
     const [viewScore, setViewScore] = useState(false);
     const [viewChar, setViewChar] = useState(false);
+    const [viewWin, setViewWin] = useState(false);
+    const [viewLose, setViewLose] = useState(false);
     
     
     useEffect(() => {
@@ -140,6 +142,7 @@ export default function CGGameplay(props)
        //For re-rolls and current character selection
        const [rerollChars, setChars] = useState([]);
        const [currentArrayIndex, setIndex] = useState(0);
+       const [battleInfo, setBattle] = useState({});
 
        //Setting up google cloud bucket
 
@@ -148,6 +151,7 @@ export default function CGGameplay(props)
             {
                 //fetch stuff goes here....annddddddd
                 axios.get('https://cloud-nimbus-backend.uc.r.appspot.com/character/newroll').then(function (response) {
+                    console.log(response.data.length)
                     setChars(response.data);
                     setLoading(false)
                 });
@@ -159,10 +163,6 @@ export default function CGGameplay(props)
             
         }, [])
 
-
-        const onChangePreview = e => {
-            setPreview(URL.createObjectURL(e.target.files[0]));
-        }
 
         async function handleSubmit(event) {
             event.preventDefault();
@@ -179,7 +179,7 @@ export default function CGGameplay(props)
                 combat: parseInt(event.target.combat.value),
                 power: parseInt(event.target.power.value),
                 speed: parseInt(event.target.speed.value),
-                url: event.target.avatar.value
+                url: preview
             }
 
             await axios.post('https://cloud-nimbus-backend.uc.r.appspot.com/character/new', newUserData).then(() => {
@@ -187,6 +187,8 @@ export default function CGGameplay(props)
                 setSuccess(true);
             });
          }
+
+         console.log(currentArrayIndex)
 
 
         return (
@@ -234,7 +236,7 @@ export default function CGGameplay(props)
                                     </FormControl>
                                     <FormControl isRequired>
                                         <FormLabel>Character Avatar Photo URL</FormLabel>
-                                        <Input type="text"  name='avatar' onChange={onChangePreview}/>
+                                        <Input type="text"  name='avatar' onChange={(e)=> {setPreview(e.target.value);}}/>
                                     </FormControl>
                                 </SimpleGrid>
                                 {/* FOR GRABBING POWER  */}
@@ -383,22 +385,41 @@ export default function CGGameplay(props)
            
             const [loading, setLoading] = useState(false);
             const [viewCharSelection, setCharSelection] = useState(true);
-            const [curUserChar, setCurUserChar] = useState({});
+            const [curUserChar, setCurUserChar] = useState(null);
             const [viewFight, setViewFight] = useState(false);
-            const [viewWin, setViewWin] = useState(false);
-            const [viewLose, setViewLose] = useState(false);
 
             const [characterArray, setCharArray] = useState([]);
             const [currentChar, setChar] = useState(null);
             const [viewAnimation, setAnimation] = useState(false);
+            const [battle, setBattle]= useState(null);
+            const [showYourChar, setYourChar] = useState(false);
+            const [showOpponent, setShowOpponent] = useState(false);
+            const [showFlashBang, setFlashBang] = useState(false);
+
+            async function fetchBattle()
+            {
+                setLoading(true);
+                axios.put(`https://cloud-nimbus-backend.uc.r.appspot.com/character/battle/${curUserChar.id}`).then(function (response)
+                        {
+                            setBattle(response.data);
+                            setLoading(false);
+                });
+
+            }
 
             useEffect(() => {
+                setLoading(true)
+
                 axios.get('https://cloud-nimbus-backend.uc.r.appspot.com/characters/user').then(function (response)
                 {
                     console.log(response)
                     const data= response.data.filter(char => char.isActive)
                     setCharArray(data);
+                    setLoading(false)
                 });
+
+
+
             }, [])
 
             // React Sub-sub component for selecting your characters!
@@ -414,20 +435,17 @@ export default function CGGameplay(props)
 
                 if (viewAnimation)
                 {
-                    setInterval(() => 
+                    setTimeout(async () => 
                     {
                         setCharSelection(false);
                         setViewFight(true);
+                        await fetchBattle()
                     }, 1600)
                 }
 
 
-
                 return (
                     <Box w='96.6%' h='90.4%'pos="absolute" top={'52.2px'} left={'15px'} color='white' style={{ backgroundImage: "url('/images/crimsonos/game/choose_character_bg.png')"}} id={'bruh'}>
-                        <Box as='button'   p={2} onClick={() => {setMenu(true); setViewChar(false); } }>
-                            <img src={'/images/crimsonos/game/xbutton.png'} alt="" />
-                        </Box>  
                         {
                             viewAnimation &&
                             <Box width='' id='fightsplash'>
@@ -448,15 +466,15 @@ export default function CGGameplay(props)
                                         }
                                         {
                                             characterArray.length > 0 &&
-                                                <Box mt={'100'} ml={'10'} p={'4'} style={{backgroundColor: "rgba(0, 0, 0, .5) "}}>
+                                            <Box mt={'100'} ml={'10'} p={'4'} style={{backgroundColor: "rgba(0, 0, 0, .5)"}}>
                                             <SimpleGrid columns={2} spacing={2} overflowY={'scroll'} h={'320px'} pr={2}>
                                                 {
 
-                                                    characterArray.map(char => (<Box as='button' bg='tomato' height='100px' width='200px' onClick={() => {changeCurrentCharacter(char.id)}} 
-                                                                                disabled={!char.isActive} style={{filter: char.isActive ? "none": "grayscale(100%)"}}
+                                                    characterArray.map(char => (<Box as='button' height='100px' width='200px' onClick={() => {changeCurrentCharacter(char.id)}} 
+                                                                                disabled={!char.isActive} style={{filter: char.isActive ? "none": "grayscale(100%)", backgroundImage: `url("${char.url}")`, backgroundSize: 'cover', backgroundPosition: 'center'}}
                                                                                 
                                                                                 >
-                                                                                    <Text key={char.id} mt={'35%'} ml={'5%'} style={{textDecoration: char.isActive ? "none": "line-through"}}>{char.name}</Text>
+                                                                                    <Text textAlign={'center'} key={char.id} mt={'35%'} ml={'5%'} style={{textDecoration: char.isActive ? "none": "line-through"}}>{char.name}</Text>
                                                                                 </Box>))
                                                 }                            
                                             </SimpleGrid>
@@ -508,20 +526,62 @@ export default function CGGameplay(props)
              // React Sub-sub component for selecting your characters!
              function FightSelectionView(props)
              {
-                    const [battleInfo, setBattleInfo] = useState({});
 
-                    useEffect(() => {
-                        axios.put(`https://cloud-nimbus-backend.uc.r.appspot.com/character/battle/${curUserChar.id}`).then(function (response)
+                setTimeout(() => {
+                    setYourChar(true)
+                }, 200);
+
+                setTimeout(() => {
+                    setShowOpponent(true)
+                }, 800);
+
+                setTimeout(() => {
+                    setFlashBang(true)
+                }, 1800);
+
+                setTimeout(() => {
+                    setViewFight(false);
+                    setCharSelection(false);
+                    setViewBattle(false);
+                    setFlashBang(false);
+
+                    if (!loading)
+                    {
+                        if (battle.win)
                         {
-                            setBattleInfo(response.data);
-                            console.log(response.data);
-                        })
+                            setViewWin(true);
+                        }
+                        else
+                        {
+                            setViewLose(true);
+                        }
+                    }
+                   
+                }, 3000)
 
-
-                    }, [])
 
                     return (
-                        <Text>Bruh</Text>
+                        <Box w='96.6%' h='90.4%'pos="absolute" top={'52.2px'} left={'15px'} color='white' style={{ backgroundImage: "url('/images/crimsonos/game/battleground_bg.png')"}} id={'bruh'}>
+                                {
+                                    (showFlashBang) &&
+                                    <Box w={'100%'} h={'100%'} position="absolute" zIndex={'1000'} bg='white' id='flashbang'></Box>
+                                }
+                                {
+                                    (battle != null && viewFight) &&
+                                    <VStack w={'auto'} position={'absolute'} pl={'5%'} pt={'20%'} id={'villian'} display={showYourChar ? 'flex' : 'none'}>
+                                        <Image boxSize='280px' borderRadius='full' objectFit='cover' src={battle ? `${battle.c1.url}` : ""} alt=""/>
+                                        <Text fontSize='4xl' textAlign={'center'} style={{textShadow: "3px 3px black"}}>{battle.c1.name}</Text>
+                                    </VStack>
+                                }
+                                { (battle != null && viewFight) &&
+                                    <VStack w={'auto'} pl={'62%'} pt={'20%'} id={'villian'} display={showOpponent  ? 'flex' : 'none'}>
+                                        <Image boxSize='280px' borderRadius='full' objectFit='cover' src={battle ? `${battle.c2.imagePrefix}/lg/${battle.c2.imageSuffix}` : ""} alt=""/>
+                                        <Text fontSize='4xl' textAlign={'center'} style={{textShadow: "3px 3px black"}}>{battle.c2.name}</Text>
+                                    </VStack>
+                                }
+
+                        
+                        </Box>
                     )
              }
 
@@ -549,104 +609,46 @@ export default function CGGameplay(props)
                 </Box>
             )
 
-
-
-
-
-
-
-
-
-            // return (
-            //     <Box w='96.6%' h='90.4%' pos="absolute" top={'52.2px'} left={'15px'} p={4} color='white' style={{ 
-            //         backgroundImage: "url('/images/crimsonos/game/battleground_bg.png')",
-            //     }}>
-            //     {
-            //         loading &&
-            //         <div style={{display: "flex", gap: "20px", alignItems:"center", justifyContent: "center", position: "absolute", top: "32%", left: "18%", zIndex: 100}}>
-            //             <img src='/images/crimsonos/crimsonos_processing.gif' alt=""/>
-            //         </div>
-            //     }
-            //             <Box as='button' onClick={() => {setMenu(true); setViewBattle(false);} }>
-            //                 <img src={'/images/crimsonos/game/xbutton.png'} alt="" />
-            //             </Box>  
-
-            //         {
-            //             !loading &&
-
-            //             <Container w={'100%'} m={0}>
-            //                 <HStack  w={'100%'} ml={'20px'}>
-            //                     <VStack alignContent={'center'} justifyContent={'center'} mt={'70'} >
-            //                             <Image src={`${charToFight.imagePrefix}/lg/${charToFight.imageSuffix}`} borderRadius='full' boxSize='200px'/>
-            //                             <HStack gap={'25'}>
-            //                                 <VStack w={'full'} align='stretch'>
-            //                                     <h1 style={{textShadow: "3px 3px black"}} >WEIGHT: {charToFight.weight}</h1>
-            //                                     <h1 style={{textShadow: "3px 3px black"}} >HEIGHT: {charToFight.height}</h1>
-            //                                     <h1 style={{textShadow: "3px 3px black"}} >INTELLIGENCE: {charToFight.intelligence}</h1>
-            //                                     <h1 style={{textShadow: "3px 3px black"}} >STRENGTH: {charToFight.strength}</h1>
-            //                                 </VStack>
-            //                                 <VStack w={'auto'} align='stretch'>
-            //                                 <h1 style={{textShadow: "3px 3px black"}} >DURABILITY: {charToFight.durability}</h1>
-            //                                 <h1 style={{textShadow: "3px 3px black"}} >COMBAT: {charToFight.combat}</h1>
-            //                                 <h1 style={{textShadow: "3px 3px black"}} >POWER: {charToFight.power}</h1>
-            //                                 <h1 style={{textShadow: "3px 3px black"}} >SPEED: {charToFight.speed}</h1>
-            //                                 </VStack>
-            //                             </HStack>
-            //                             <Spacer/>
-            //                             <Spacer/>
-            //                             <Spacer/>
-            //                             <Spacer/>
-            //                             <Spacer/>
-            //                             <Spacer/>
-            //                             <Text fontSize='4xl' textAlign={'center'} style={{textShadow: "3px 3px black"}}>{charToFight.name}</Text>
-                                        
-            //                     </VStack>
-                                
-            //                     <VStack alignContent={'center'} justifyContent={'center'} pt={'71'} pl={'290px'}>
-            //                         <HStack>
-            //                             <Box as='button' onClick={() => {setIndex(currentArrayIndex != 0 ? currentArrayIndex - 1 : currentArrayIndex)} }>
-            //                                 <img src={'/images/crimsonos/game/lbutton.png'} alt="" />
-            //                             </Box>  
-            //                             <Image src={`${yourChars[currentArrayIndex].url}`} borderRadius='full' boxSize='200px'/>
-            //                             <Box as='button' onClick={() => {setIndex(currentArrayIndex != yourChars.length - 1 ? currentArrayIndex + 1 : currentArrayIndex)} }>
-            //                                 <img src={'/images/crimsonos/game/rbutton.png'} alt="" />
-            //                             </Box>  
-            //                         </HStack>
-                                        
-            //                             <HStack gap={'25'}>
-            //                                 <VStack w={'auto'} align='stretch'>
-            //                                     <h1 style={{textShadow: "3px 3px black"}} >WEIGHT: {yourChars[currentArrayIndex].weight}</h1>
-            //                                     <h1 style={{textShadow: "3px 3px black"}} >HEIGHT: {yourChars[currentArrayIndex].height}</h1>
-            //                                     <h1 style={{textShadow: "3px 3px black"}} >INTELLIGENCE: {yourChars[currentArrayIndex].intelligence}</h1>
-            //                                     <h1 style={{textShadow: "3px 3px black"}} >STRENGTH: {yourChars[currentArrayIndex].strength}</h1>
-            //                                 </VStack>
-            //                                 <VStack w={'auto'} align='stretch'>
-            //                                 <h1 style={{textShadow: "3px 3px black"}} >DURABILITY: {yourChars[currentArrayIndex].durability}</h1>
-            //                                 <h1 style={{textShadow: "3px 3px black"}} >COMBAT: {yourChars[currentArrayIndex].combat}</h1>
-            //                                 <h1 style={{textShadow: "3px 3px black"}} >POWER: {yourChars[currentArrayIndex].power}</h1>
-            //                                 <h1 style={{textShadow: "3px 3px black"}} >SPEED: {yourChars[currentArrayIndex].speed}</h1>
-            //                                 </VStack>
-            //                             </HStack>
-            //                             <Spacer/>
-            //                             <Spacer/>
-            //                             <Spacer/>
-            //                             <Spacer/>
-            //                             <Spacer/>
-            //                             <Spacer/>
-            //                             <Text fontSize='4xl'  style={{textShadow: "3px 3px black"}}>{yourChars[currentArrayIndex].name}</Text>  
-            //                     </VStack>
-            //                 </HStack>
-            //             </Container>
-
-
-
-
-
-            //         }
-                        
-            //     </Box>
-            // )
         }
+
+
+    function Loser()
+    {
+        return (
+            <Box w='96.6%' h='90.4%' pos="absolute" top={'52.2px'} left={'15px'} color='white' style={{ 
+                backgroundImage: "url('/images/crimsonos/game/youlosebg.png')",
+            }}>
+                    <Box as='button' onClick={() => {setMenu(true); setViewLose(false); setViewBattle(false);} } p={'3'}>
+                        <img src={'/images/crimsonos/game/xbutton.png'} alt="" />
+                    </Box>  
+
+                    <Box width='' id='fightsplash'>
+                        <img src="/images/crimsonos/game/charselection/youlose.png"/>
+                    </Box>
+
+            </Box>
+        )
+    }
+
+    function Win()
+    {
+        return (
+            <Box w='96.6%' h='90.4%' pos="absolute" top={'52.2px'} left={'15px'} color='white' style={{ 
+                backgroundImage: "url('/images/crimsonos/game/youwinbg.png')",
+            }}>
+                    <Box as='button' onClick={() => {setMenu(true); setViewWin(false); setViewBattle(false);} } p={'3'}>
+                        <img src={'/images/crimsonos/game/xbutton.png'} alt="" />
+                    </Box>  
+
+                    <Box width='' id='fightsplash'>
+                        <img src="/images/crimsonos/game/charselection/youwin.png"/>
+                    </Box>
+
+            </Box>
+        )
+    }
+
+
 
     //React subcomponent for determining high scores of each user's characters!
     function ScorePage()
@@ -655,7 +657,7 @@ export default function CGGameplay(props)
         
 
         useEffect(() => {
-            
+            setViewChar(false);
         }, [])
 
         return (
@@ -676,6 +678,7 @@ export default function CGGameplay(props)
 
     }    
 
+
     return (
         <Container style={style}>
             {
@@ -685,6 +688,14 @@ export default function CGGameplay(props)
             {
                 viewBattle &&
                 <BattleGamePage/>
+            }
+            {
+                viewLose &&
+                <Loser/>
+            }
+            {
+                viewWin &&
+                <Win/>
             }
             {
                 viewChar &&
