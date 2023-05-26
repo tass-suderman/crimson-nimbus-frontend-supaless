@@ -16,6 +16,14 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+th, table 
+{
+  margin: 0;
+  font-family: 'chicagoflfregular', cursive !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
@@ -29,6 +37,14 @@ code {
     position: absolute;
     opacity: 0;
     animation: entrance-fade-in 1.0s cubic-bezier(0.86, 0, 0.07, 1);
+    animation-fill-mode: forwards;
+}
+
+#letsfight {
+  z-index: 1000;
+    position: absolute;
+    opacity: 0;
+    animation: entrance-fade-in2 1.0s cubic-bezier(0.86, 0, 0.07, 1);
     animation-fill-mode: forwards;
 }
 
@@ -48,7 +64,7 @@ code {
 }
 
 
-@keyframes entrance-fade-in {
+@keyframes entrance-fade-in2 {
   from {
     opacity: 0;
     transform: translateY(0%);
@@ -56,6 +72,17 @@ code {
   to {
     opacity: 1;
     transform: translateY(75%);
+  }
+}
+
+@keyframes entrance-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(0%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(70%);
   }
 }
 

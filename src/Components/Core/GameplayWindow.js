@@ -62,7 +62,7 @@ export default function GameplayWindow()
 
                     axios.defaults.headers.common['Authorization'] = `Bearer ${value.data.session.provider_token}`
 
-                    axios.post('https://cloud-nimbus-backend.uc.r.appspot.com/login');
+                    axios.post(`${process.env.REACT_APP_FETCH_BASE}/login`);
                 }
 
                 else
