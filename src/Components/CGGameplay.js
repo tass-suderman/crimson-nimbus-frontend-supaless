@@ -184,15 +184,15 @@ export default function CGGameplay(props)
             setTransWin(true)
 
             const newUserData = {
-                name:  event.target.name.value,
-                weight: parseInt(event.target.weight.value),
-                height: parseInt(event.target.height.value),
-                intelligence: parseInt(event.target.intelligence.value),
-                strength: parseInt(event.target.strength.value),
-                durability: parseInt(event.target.durability.value),
-                combat: parseInt(event.target.combat.value),
-                power: parseInt(event.target.power.value),
-                speed: parseInt(event.target.speed.value),
+                name:  event.target.name.value ?? "James",
+                weight: parseInt(event.target.weight.value) ?? 0,
+                height: parseInt(event.target.height.value) ?? 0,
+                intelligence: parseInt(event.target.intelligence.value) ?? 0,
+                strength: parseInt(event.target.strength.value) ?? 0,
+                durability: parseInt(event.target.durability.value) ?? 0,
+                combat: parseInt(event.target.combat.value) ?? 0,
+                power: parseInt(event.target.power.value) ?? 0,
+                speed: parseInt(event.target.speed.value) ?? 0,
                 url: preview
             }
 
@@ -264,7 +264,7 @@ export default function CGGameplay(props)
                                                 <img src={disableCombat ? '/images/crimsonos/game/SELECTION/combat2.png' : '/images/crimsonos/game/SELECTION/combat1.png'}/>
                                             </Box>  
                                             <FormControl isRequired>
-                                                <Input type='text' name='combat' disabled={true} value={infCombat} placeholder=''/>
+                                                <Input type='text' name='combat' disabled={true} value={infCombat ?? 0} placeholder=''/>
                                             </FormControl>
                                         </Flex>
                                         <Flex gap={'25px'}>
@@ -276,7 +276,7 @@ export default function CGGameplay(props)
                                                 <img src={disableDurability ? '/images/crimsonos/game/SELECTION/Durability2.png' : '/images/crimsonos/game/SELECTION/Durability1.png'}/>
                                             </Box>  
                                             <FormControl isRequired>
-                                                <Input type='text' name='durability' disabled={true} value={infDurability} placeholder=''/>
+                                                <Input type='text' name='durability' disabled={true} value={infDurability ?? 0} placeholder=''/>
                                             </FormControl>
 
                                         </Flex>
@@ -289,7 +289,7 @@ export default function CGGameplay(props)
                                                 <img src={disableHeight ? '/images/crimsonos/game/SELECTION/height2.png' : '/images/crimsonos/game/SELECTION/height1.png'}/>
                                             </Box>  
                                             <FormControl isRequired>
-                                                <Input type='text' name='height' disabled={true} value={infHeight} placeholder=''/>
+                                                <Input type='text' name='height' disabled={true} value={infHeight ?? 0} placeholder=''/>
                                             </FormControl>
                                         </Flex>
                                         <Flex gap={'25px'}>
@@ -301,7 +301,7 @@ export default function CGGameplay(props)
                                                 <img src={disableIntelligence ? '/images/crimsonos/game/SELECTION/intelligence2.png' : '/images/crimsonos/game/SELECTION/intelligence1.png'}/>
                                             </Box>  
                                             <FormControl isRequired>
-                                                <Input type='text' name='intelligence' disabled={true} value={infIntelligence} placeholder=''/>
+                                                <Input type='text' name='intelligence' disabled={true} value={infIntelligence ?? 0} placeholder=''/>
                                             </FormControl>
                                         </Flex>
 
@@ -314,7 +314,7 @@ export default function CGGameplay(props)
                                                 <img src={disablePower ? '/images/crimsonos/game/SELECTION/power2.png' : '/images/crimsonos/game/SELECTION/power1.png'}/>
                                             </Box>  
                                             <FormControl isRequired>
-                                                <Input type='text' name='power' disabled={true} value={infPower} placeholder=''/>
+                                                <Input type='text' name='power' disabled={true} value={infPower ?? 0} placeholder=''/>
                                             </FormControl>
                                         </Flex>
 
@@ -326,7 +326,7 @@ export default function CGGameplay(props)
                                              }} >
                                                 <img src={disableSpeed ? '/images/crimsonos/game/SELECTION/speed2.png' : '/images/crimsonos/game/SELECTION/speed1.png'}/>
                                             </Box>  
-                                            <Input type='text' name='speed' disabled={true} value={infSpeed} placeholder=''/>
+                                            <Input type='text' name='speed' disabled={true} value={infSpeed ?? 0} placeholder=''/>
                                         </Flex>
                                         <Flex gap={'25px'}>
                                             <Box as='button' type={'button'} disabled={disableStrength} onClick={() => {
@@ -337,7 +337,7 @@ export default function CGGameplay(props)
                                                 <img src={disableStrength ? '/images/crimsonos/game/SELECTION/Strength2.png' : '/images/crimsonos/game/SELECTION/Strength1.png'}/>
                                             </Box>  
                                             <FormControl isRequired>
-                                                <Input type='text' name='strength' disabled={true} value={infStrength} placeholder=''/>
+                                                <Input type='text' name='strength' disabled={true} value={infStrength ?? 0} placeholder=''/>
                                             </FormControl>
                                         </Flex>
                                         <Flex gap={'25px'}>
@@ -349,7 +349,7 @@ export default function CGGameplay(props)
                                                 <img src={disableWeight ? '/images/crimsonos/game/SELECTION/weight2.png' : '/images/crimsonos/game/SELECTION/weight1.png'}/>
                                             </Box>
                                             <FormControl isRequired>
-                                                <Input type='text' name='weight' disabled={true} value={infWeight} placeholder=''/>
+                                                <Input type='text' name='weight' disabled={true} value={infWeight ?? 0} placeholder=''/>
                                             </FormControl>
                                         </Flex>
                                     </VStack>
