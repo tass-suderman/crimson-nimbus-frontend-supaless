@@ -309,8 +309,35 @@ With that, you have a version of our application that is running locally but con
 ***IF YOU HAVE NOT DEPLOYED YOUR BACKEND SERVER YET, FOLLOW TASS'S REPOSITORY'S INSTRUCTION FOR MORE INFORMATION ABOUT DEPLOYING YOUR BACKEND SERVER***<br>
 **If you do however created a new SQL and backend server, replaced the `REACT_APP_FETCH_BASE` with your own appspot url of that backend server**
 
+Is it working as expected? Now let's deploy it :)<br><br>
+5. In your IDE's console, type `gcloud init` and follow the given prompts. (It may be different depending if you have used GCloud Cli before and has your Google account authenticated with it)
+<img src="https://i.ibb.co/dmkz57y/Screenshot-2023-05-26-105353.png" width="800" />
 
-6. https://i.ibb.co/dmkz57y/Screenshot-2023-05-26-105353.png
+6. After that, to obtain our target url to be placed in our Supabase URL configuration and our redirectTO discordAuth function, type `gcloud app deploy`.
+7. You will be greeted with a lot of information, but focus on the Target URL value. Copy it and press `n` to stop deploying.
+8.  In `` src/Components/Core/LoginWindow.js`` and in this section of the code:
+```javascript
+ async function discordAuth(supabase)
+    {
+        const { data, error } = await supabase.auth.signInWithOAuth({
+            provider: 'discord',
+            options: {
+              //redirectTo: 'https://the-legendary-cloud-guardian.uc.r.appspot.com/gameplay',
+              redirectTo: 'http://localhost:3000/gameplay',
+            },
+        })
+
+    }
+```
+Comment out the localhost line, uncomment the appspot one and replace it with your appspot. The format should be like `https://<COPIED TARGET URL>/gameplay`.
+9. After that, head over back to your Supabase.
+10. In the Supabase console, in the menu on the left side, press ``Authentication``
+11. In the Authentication submenu, press ``URL Configuration``
+12. In that section, replace the Site URL with your copied Target URL and press `Save`
+13. In the Redirect URLs section, add an entry to include these infomation
+* https://<COPIED TARGET URL>/
+* https://<COPIED TARGET URL>/gameplay
+14. After that, head back to your IDE, and in your IDE's command console, press 
 
 
 
