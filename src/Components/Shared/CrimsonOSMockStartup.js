@@ -28,8 +28,8 @@ export default function CrimsonOSMockStartup()
                 <Flex w={"100vw"} height={"100vh"} alignContent={"center"} justifyContent={"center"}>
                     <Center>
                         <VStack>
-                            <img src={'./images/crimsonos/crimsonos_startup.gif'} alt='' width={"75%"}/>
-                            <img src={'./images/crimsonos/crimsonos_service_Startup.gif'}  alt='' width={"20%"}/>
+                            <img src={'/images/crimsonos/crimsonos_startup.gif'} alt='' width={"75%"}/>
+                            <img src={'/images/crimsonos/crimsonos_service_Startup.gif'}  alt='' width={"20%"}/>
                         </VStack>
                     </Center>
                 </Flex>
