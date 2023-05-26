@@ -348,9 +348,7 @@ Since we have provided our app.yaml configuration file in this repository, you d
 
 **CONGRATS! YOUR APPLICATION HAS BEEN DEPLOYED TO YOUR OWN GOOGLE APP ENGINE WITH CONFIGURATIONS TIED TO YOU SPECIFICALLY!**
 
-
-
-
-
 ## Credits
+Thanks again to Tass Suderman for setting up the SQL and Google App Service for the backend server. I know it is hard, so kudos for you, Tass!<br><br>
+Also thanks to Wade for this assignment. It is quite fun and learned more how PaaS works in our web application as a whole.
 
