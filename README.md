@@ -225,7 +225,6 @@ Before we start deploying this web application to the Google App Engine, ensure 
 * Google Cloud CLI (You can follow the instruction to install it. [Download here!](https://cloud.google.com/sdk/docs/install "Download here!"))'
 * Google Cloud Project (After you tied your Google Account with Google Cloud and activate their free trial, create a project to store your App Engine into [More information here](https://cloud.google.com/resource-manager/docs/creating-managing-projects "More information here!"))
 
-#### Creating your App Engine
 1. On your console, in the search bar, type in `App Engine` and select `App Engine` in the results. (**Make sure you have selected your Project!**)
 2. In the Welecome to App Engine screen, select `Create Application`.
 3. In the Create App screen, in the configure application section, select the closes region to your area and leave the Identity and API access empty. Press Next
@@ -233,7 +232,7 @@ Before we start deploying this web application to the Google App Engine, ensure 
 
 After a couple of minutes later (usually a minute or so), we have successfully created our App Engine. Now, onto the Supabase Authentication.
 
-#### Supabase Authentication Setup
+### Supabase Authentication Setup
 Before we start doing some Subapase setup, create an account with them first. [More information here](https://app.supabase.com/sign-up "More information here!")
 
 1. On your Supabase console, press `+ New Project`.
@@ -256,7 +255,7 @@ Before we start doing some Subapase setup, create an account with them first. [M
 Now that we have set up our Supabase Authentication, lets head over to create our discord authentication system.
 
 
-#### Discord Authentication Setup
+### Discord Authentication Setup
 The only prequiste here is to create a Discord account. [Register here!](https://discord.com/register "Register here!").
 
 1. Head over to this [link to open up your Discord Developer Console](https://discord.com/developers/applications "link to open up your Discord Developer Console").
@@ -277,6 +276,12 @@ With our redirect URL copied, let's head back to the Discord Developer Portal.
 2. Place your Subapase Redirect URL in here.
 
 With it, we have configured our Supabase. Now this is where we configure our repository.
+### Configuring Key Authentication Variables in the repository
+As always, let us start off by cloning this repository to your local directory in your computer. For more information how to clone a repository from GitHub, follow this [link](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository "link")
+
+You got it cloned? Let us proceed
+1. In the root folder, head over 
+
 
 
 
