@@ -303,8 +303,14 @@ REACT_APP_FETCH_BASE=https://cloud-nimbus-backend.uc.r.appspot.com
 ```
 Ensure that the localhost is not commented out, but the appspot is. We will replace this later on.
 
-4. After that, in your IDE's console, type `npm i` to install the required packages and eventually 
-5. https://i.ibb.co/dmkz57y/Screenshot-2023-05-26-105353.png
+4. After that, in your IDE's console, type `npm i` to install the required packages and eventually, type ``npm start`` to test whether or not it is working correctly.
+
+With that, you have a version of our application that is running locally but connecting with our Supabase authentication and Google Cloud SQL through our deployed backend server<br><br>
+***IF YOU HAVE NOT DEPLOYED YOUR BACKEND SERVER YET, FOLLOW TASS'S REPOSITORY'S INSTRUCTION FOR MORE INFORMATION ABOUT DEPLOYING YOUR BACKEND SERVER***<br>
+**If you do however created a new SQL and backend server, replaced the `REACT_APP_FETCH_BASE` with your own appspot url of that backend server**
+
+
+6. https://i.ibb.co/dmkz57y/Screenshot-2023-05-26-105353.png
 
 
 
