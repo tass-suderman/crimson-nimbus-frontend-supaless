@@ -329,15 +329,24 @@ Is it working as expected? Now let's deploy it :)<br><br>
 
     }
 ```
-Comment out the localhost line, uncomment the appspot one and replace it with your appspot. The format should be like `https://<COPIED TARGET URL>/gameplay`.
-9. After that, head over back to your Supabase.
-10. In the Supabase console, in the menu on the left side, press ``Authentication``
-11. In the Authentication submenu, press ``URL Configuration``
-12. In that section, replace the Site URL with your copied Target URL and press `Save`
+Comment out the localhost line, uncomment the appspot one and replace it with your appspot. The format should be like `https://<COPIED TARGET URL>/gameplay` <br>
+
+9. After that, head over back to your Supabase.<br>
+10. In the Supabase console, in the menu on the left side, press ``Authentication``<br>
+11. In the Authentication submenu, press ``URL Configuration``<br>
+12. In that section, replace the Site URL with your copied Target URL and press `Save`<br>
 13. In the Redirect URLs section, add an entry to include these infomation
-* https://<COPIED TARGET URL>/
-* https://<COPIED TARGET URL>/gameplay
-14. After that, head back to your IDE, and in your IDE's command console, press 
+* ``https://<COPIED TARGET URL>/``
+* ``https://<COPIED TARGET URL>/gameplay``
+14. After that, head back to your IDE.
+15. Ensuring that everything works from game functionality and any database functionality, type in your IDE's command console ``npm run build`` to create a production version of our application.
+Since we have provided our app.yaml configuration file in this repository, you do not have to worry about creating one.
+16. After it has been built, type in your console ``gcloud app deploy`` and press ``Y`` when prompted to continue.
+17. It will take a long time, so make yourself a Coffee...or drink another can of Monster as it uploads and deploys your website to Google Cloud
+18. After a while, you will be greeted with a information that the deployment has been successfull. Type in your IDE console ``gcloud app browse`` to determine your Target URL. 
+19. Copy or select it to access your recently deployed application.
+
+**CONGRATS! YOUR APPLICATION HAS BEEN DEPLOYED TO YOUR OWN GOOGLE APP ENGINE WITH CONFIGURATIONS TIED TO YOU SPECIFICALLY!**
 
 
 
