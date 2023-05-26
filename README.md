@@ -93,7 +93,7 @@ Another example is using it on a useEffect method. Example is this code:
  }, [])
 ```
 This basically means that every time this certain component start up, fetch up the highscores from the database, filter the local ones and place it on a state, store the unfiltered data into an another state, and after that, stop the loading. The `[]` means that this only runs ONCE! <br><br>
-You can see that the the base URL is substituted with `${process.env.REACT_APP_FETCH_BASE}`. This is where most of our configuration authentication token goes. It's not secure since we have included the env file in the repository, but it is a good idea not to if you are doing this for real.
+You can see that the the base URL is substituted with `${process.env.REACT_APP_FETCH_BASE}`. This is where most of our configuration authentication token goes.
 
 ### Discord Authentication
 <img src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png" width="150"/><img src="https://dka575ofm4ao0.cloudfront.net/pages-transactional_logos/retina/205146/logo-light.png" width="425"/><br><br>
