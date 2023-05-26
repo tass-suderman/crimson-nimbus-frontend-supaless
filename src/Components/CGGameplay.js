@@ -952,10 +952,10 @@ export default function CGGameplay(props)
                 {
                     //This is for setting for local data
                     const data = response.data.filter(indEntry => indEntry.creator.userName === props.name)
-                    setLocal(data);
+                    setLocal(data.slice(0,10));
 
                     //The rest of the national data goes here
-                    setNational(response.data)
+                    setNational(response.data.slice(0,10))
 
                     setLoading(false);
                 })
