@@ -218,11 +218,68 @@ This code basically does the same thing with the login but kinda different. It c
 
 By this point, that's how this react app authenticate its user with Discord. Now that we knew about the behind the scenes, how do we deploy all of this from scratch. Check out the next section!
 
-
-
-
-
 ## Deployment
+### Google Cloud and Google App Engine Configuration
+Before we start deploying this web application to the Google App Engine, ensure that you have the following items before we proceed this section:
+* Google Cloud Account (It is tied with your regular Google Account, so you can use your account to access Google Cloud Services)
+* Google Cloud CLI (You can follow the instruction to install it. [Download here!](https://cloud.google.com/sdk/docs/install "Download here!"))'
+* Google Cloud Project (After you tied your Google Account with Google Cloud and activate their free trial, create a project to store your App Engine into [More information here](https://cloud.google.com/resource-manager/docs/creating-managing-projects "More information here!"))
+
+#### Creating your App Engine
+1. On your console, in the search bar, type in `App Engine` and select `App Engine` in the results. (**Make sure you have selected your Project!**)
+2. In the Welecome to App Engine screen, select `Create Application`.
+3. In the Create App screen, in the configure application section, select the closes region to your area and leave the Identity and API access empty. Press Next
+4. Upon pressing the next button, it will say `Creating application...`.
+
+After a couple of minutes later (usually a minute or so), we have successfully created our App Engine. Now, onto the Supabase Authentication.
+
+#### Supabase Authentication Setup
+Before we start doing some Subapase setup, create an account with them first. [More information here](https://app.supabase.com/sign-up "More information here!")
+
+1. On your Supabase console, press `+ New Project`.
+2. In the Create a new project section, fill your name, select `Generate a password` in the Database password (We are not going to use this, anyways), and select a region and pricing plan appropriate with you.
+3. After it created and initializes the project, head over to the menu on the left, and press `Authentication`
+4. In the Authentication section, in the submenu of it, select `URL Configuration`.
+5. In the Site URL, you will be greeted with Site URL and Redirect URLs. We will edit this as we progress in the deployment section later on. But for now, we will add localhost:3000 for our development application.
+6. In the Redirect URLs, press the `Remove` button next to the `https://localhost:3000`. (This is because, by default, React uses `http` NOT `https`.
+7. In the Remove URL section, press `Remove URL`
+8. In the Redirect URLs, press the `Add URL` button.
+9. In the Add a new URL section, in the URL section, type in `http://localhost:3000` and press `Add URL`
+10. Repeat Steps 9-10 to add `http://localhost:3000/gameplay`
+11. After that, go to the menu bar in the left side of your screen, and select `Project Settings`
+12. In the Project Settings sub menu, select `API`
+13. In the API Settings, take note the following variables
+* Project URL
+* Project API keys
+(We will use this to talk our react client to our authentication system)
+
+Now that we have set up our Supabase Authentication, lets head over to create our discord authentication system.
+
+
+#### Discord Authentication Setup
+The only prequiste here is to create a Discord account. [Register here!](https://discord.com/register "Register here!").
+
+1. Head over to this [link to open up your Discord Developer Console](https://discord.com/developers/applications "link to open up your Discord Developer Console").
+2. In the Applications section, press `New Application`.
+3. In the Create an Application section, type any name you want, select the checkbox to agree with the ToS, and press `Create`.
+4. After creating it, in the menu bar on the left, press `OAuth2`.
+5. In the OAuth2 section, take note of the Client ID and Client Secret and copy it. **DO NOT DISTRIBUTE!**
+
+Now that we have our Discord Client Secret key, let's head back to our Supabase console. (You haven't closed it yet, right?)
+1. Head over to the menu on the left, and press `Authentication`.
+2. In the Authentication submenu, select `Providers`.
+3. In the Providers section, in the Auth Providers, scroll down to see `Discord`. Press that.
+4. In that section, enable Discord Provider by pressing the slide button. Paste the copied Client ID and Client Secret to the appropriate text field.
+5. Take note of the Redirect URL and copy it.
+
+With our redirect URL copied, let's head back to the Discord Developer Portal.
+1. In the OAuth2 section, in the Redirect section, press the `Add Redirect`.
+2. Place your Subapase Redirect URL in here.
+
+With it, we have configured our Supabase. Now this is where we configure our repository.
+
+
+
 
 ## Credits
 
