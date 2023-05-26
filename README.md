@@ -279,8 +279,16 @@ With it, we have configured our Supabase. Now this is where we configure our rep
 ### Configuring Key Authentication Variables in the repository
 As always, let us start off by cloning this repository to your local directory in your computer. For more information how to clone a repository from GitHub, follow this [link](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository "link")
 
-You got it cloned? Let us proceed
-1. In the root folder, head over 
+You got it cloned? Let us proceed with an IDE of your choice.
+1. In the root folder of the repository, which should include public and src folders, add a ".env" file into there. Within that .env file, it should include the following:
+```
+REACT_APP_SUPABASE_URL=YOUR SUPABASE URL YOU JUST COPIED
+REACT_APP_ANON_PUBLIC_SUPABASE=YOUR SUPABASE ANON PUBLIC YOU JUST COPIED
+REACT_APP_FETCH_BASE=https://cloud-nimbus-backend.uc.r.appspot.com
+```
+2. After that, save it.
+3. In `` src/Components/Core/LoginWindow.js``
+4. 
 
 
 
