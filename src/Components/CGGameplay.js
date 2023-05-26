@@ -948,7 +948,7 @@ export default function CGGameplay(props)
 
             async function initialScoreSet()
             {
-                axios.get(`${process.env.REACT_APP_FETCH_BASE}/characters/?sortby=wins&limit=10&sortorder=DESC`).then(function (response) 
+                axios.get(`${process.env.REACT_APP_FETCH_BASE}/characters/?sortby=wins&sortorder=DESC`).then(function (response) 
                 {
                     //This is for setting for local data
                     const data = response.data.filter(indEntry => indEntry.creator.userName === props.name)
