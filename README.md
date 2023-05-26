@@ -287,8 +287,24 @@ REACT_APP_ANON_PUBLIC_SUPABASE=YOUR SUPABASE ANON PUBLIC YOU JUST COPIED
 REACT_APP_FETCH_BASE=https://cloud-nimbus-backend.uc.r.appspot.com
 ```
 2. After that, save it.
-3. In `` src/Components/Core/LoginWindow.js``
-4. 
+3. In `` src/Components/Core/LoginWindow.js`` and in this section of the code:
+```javascript
+ async function discordAuth(supabase)
+    {
+        const { data, error } = await supabase.auth.signInWithOAuth({
+            provider: 'discord',
+            options: {
+              //redirectTo: 'https://the-legendary-cloud-guardian.uc.r.appspot.com/gameplay',
+              redirectTo: 'http://localhost:3000/gameplay',
+            },
+        })
+
+    }
+```
+Ensure that the localhost is not commented out, but the appspot is. We will replace this later on.
+
+4. After that, in your IDE's console, type `npm i` to install the required packages and eventually 
+5. https://i.ibb.co/dmkz57y/Screenshot-2023-05-26-105353.png
 
 
 
