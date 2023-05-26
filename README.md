@@ -6,12 +6,14 @@ https://the-legendary-cloud-guardian.uc.r.appspot.com/
 ## In a world torn apart by cyberattacks and crazy lumberjacks, a lone guardian takes to the clouds in order to fight back. That guardian is you.
 
 ### This portion is the Frontend portion of the Legenedary Cloud Guardian
-The entire frontend portion of the Web-based game application is created with these cutting-edge front-end frameworks/tools:
+The entire frontend portion of the Web-based game application is created with these cutting-edge front-end frameworks/tools:<br><br>
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/2300px-React-icon.svg.png" width="120"/> <img src="https://raw.githubusercontent.com/chakra-ui/chakra-ui/main/media/logo-colored@2x.png?raw=true" width="425"/> 
 
 The entire frontend framework has been created through the use of React, aided with a flexible front-end component-based tool with Chakra.
 <br><br>
 In terms of calling the SQL Database from the backend server, of which are both deployed through **Google Cloud MySQL** and **Google App Engine**, this frontend application utilizes **Axios** to fetch, set, and modify data acquired from the database. More information about it down below.
+
+Want to play the game? You need Discord credentials to continue on!
 
 <br><br>
 For the backend server, follow my partner, Tass Suderman's repository: [Cloud Guardian Backend Server](https://github.com/tass-suderman/crimson-nimbus-backend)
