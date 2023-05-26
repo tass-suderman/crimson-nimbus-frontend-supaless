@@ -75,7 +75,6 @@ export default function CGGameplay(props)
             {
                 axios.get(`${process.env.REACT_APP_FETCH_BASE}/characters/user`).then(function (response)
                 {
-                    console.log(response);
                     const data= response.data.filter(char => char.isActive)
                     setCustomChar(data.length) 
                     setLoading(false);
@@ -107,7 +106,7 @@ export default function CGGameplay(props)
                         <img src={'/images/crimsonos/game/menubutton/newcharbtn.png'} alt="" />
                     </Box>
 
-                    <Box as='button' onClick={() => {setMenu(false); console.log("Wow!"); setViewBattle(true);}} disabled={numOfCustomChar <= 0 ? true : false}>
+                    <Box as='button' onClick={() => {setMenu(false); setViewBattle(true);}} disabled={numOfCustomChar <= 0 ? true : false}>
                     <img src={ numOfCustomChar <= 0 ? '/images/crimsonos/game/menubutton/fightbtn2.png' : '/images/crimsonos/game/menubutton/fightbtn1.png'} alt="" />
                     </Box>
 
@@ -167,7 +166,6 @@ export default function CGGameplay(props)
                     //For buffer purposes to avoid any erros
                     const data = response.data;
                     data[data.length] = data[data.length - 1];
-                    console.log(data);
                     setChars(data);
                     setLoading(false)
                 });
@@ -204,7 +202,6 @@ export default function CGGameplay(props)
             });
          }
 
-         console.log(currentArrayIndex)
 
 
         return (
