@@ -11,7 +11,12 @@ const startupStyle =
     position: "relative"
 }
 
-
+/**
+ * This React component just emulates a mock MacOs like startup sequence.
+ * This mostly runs for like 3 seconds before handling off to the login page.
+ * @param {} props 
+ * @returns 
+ */
 export default function CrimsonOSMockStartup()
 {
 

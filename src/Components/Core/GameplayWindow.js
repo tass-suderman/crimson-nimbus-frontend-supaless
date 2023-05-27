@@ -7,41 +7,31 @@ import CGGameplay from '../CGGameplay';
 import axios from 'axios';
 
 
-
-const style = {
-    minWidth: "1000px",
-    padding: "0px",
-    display: "inline-block",
-    position: "absolute",
-    top: "10%",
-    left: "23%"
-}
-
 let supabase = createClient(
     process.env.REACT_APP_SUPABASE_URL,
     process.env.REACT_APP_ANON_PUBLIC_SUPABASE
 );
 
-
+/**
+ * This React Component serves as the main handler of the CGGameplay Component which contains the logic and animation for our battle and character selecting.
+ * Essentially, the role of this component is to allow access to the gameplay component of the web application IF you are authenticated.
+ *
+ * If you are not authenticated, you are not allowed to access the gameplay and have to be authenticated,
+ * @returns 
+ */
 export default function GameplayWindow()
 {
-    const bgStyle = {
-        backgroundImage: "url('/images/crimsonos/crimson_signin.png')",
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-    }
-
-    const bgStyle2 = {
-        backgroundImage: "url('/images/crimsonos/crimsonuser.png')",
-        width: "22%",
-        height: "20%",
-    }
-
     const [userdata, setData] = useState({});
     const [loading, setLoading] = useState(true)
     const [userProfile, setProfile] = useState({})
-    const navigate = useNavigate();
 
+    /**
+     * This useEffect basically runs on each startup of this component.
+     * When a user tries to access this section, we grab both the session and the userdata discord information.
+     * 
+     * If you have BOTH the userdata and session, you are allowed to go in to have some fun,
+     * If one of them are not available, due to session on sticking for 30 minutes max, you get kicked out and lands you on the login page.
+     */
     useEffect(() => {
         async function getUserData()
         {
@@ -60,6 +50,8 @@ export default function GameplayWindow()
                 if (value.data.session?.provider_token)
                 {   
 
+                    // As we need the provider token for calling the DB. We grab the provider token provided by Supabase, use it
+                    // as our headers for axios, and use that add our discord user entry to the DB.
                     axios.defaults.headers.common['Authorization'] = `Bearer ${value.data.session.provider_token}`
 
                     axios.post(`${process.env.REACT_APP_FETCH_BASE}/login`);
@@ -73,6 +65,7 @@ export default function GameplayWindow()
 
             setData({discord: userData.discord, session: userData.session})
 
+            // As a fail safe, this checks if one of them does not provide the necessary details to continue on.
             if (!userData.discord || !userData.session.provider_token)
             {
                 window.location.replace("/login");

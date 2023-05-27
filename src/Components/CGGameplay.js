@@ -154,9 +154,10 @@ export default function CGGameplay(props)
        //For re-rolls and current character selection
        const [rerollChars, setChars] = useState([]);
        const [currentArrayIndex, setIndex] = useState(0);
-       const [battleInfo, setBattle] = useState({});
 
 
+       // Upon launching the Create Character page, we fetch the database to retrieve 8 random heroes
+       // from the database.
         useEffect(() => {
             async function fetchChars()
             {
@@ -177,7 +178,8 @@ export default function CGGameplay(props)
             
         }, [])
 
-
+        // A submit handler to catch all of the form data into a object and send that object to the database
+        // by using Axios.post.
         async function handleSubmit(event) {
             event.preventDefault();
 
@@ -196,6 +198,7 @@ export default function CGGameplay(props)
                 url: preview
             }
 
+            // After posting, inform users that they have placed their characters to the DB.
             await axios.post(`${process.env.REACT_APP_FETCH_BASE}/character/new`, newUserData).then(() => {
                 setTrans('/images/crimsonos/trasnmit6.png');
                 setSuccess(true);
@@ -234,7 +237,6 @@ export default function CGGameplay(props)
                 }
 
                 {
-                   
                     (!loading && !transWin)  &&
                     
                     <Box id={'FORM CONTROL'} w='100%' >
@@ -395,6 +397,8 @@ export default function CGGameplay(props)
         function BattleGamePage()
         {
            
+            // A lot of states for storing current selected character, current discord user, disabled state for the reroll states, and whether or not view different subcomponents which are just
+            // basically either sub screens or subanimations.
             const [loading, setLoading] = useState(false);
             const [viewCharSelection, setCharSelection] = useState(true);
             const [curUserChar, setCurUserChar] = useState(null);
@@ -615,6 +619,8 @@ export default function CGGameplay(props)
             function RerollChar()
             {
 
+                // This function allows users to reroll a character one stat from the database and update it as such.
+                // However, after selecting one stat to reroll, everything is disabled (buttons) so you can't reroll more of it again!
                 async function rerollChar(statnum)
                 {
                     setLoading(true);
@@ -631,6 +637,9 @@ export default function CGGameplay(props)
                     
                 }
 
+                // If the animation of starting the battle appears, it means this series of functions,
+                // basically to change scene to the Fighting scene and fetching the database for a fight mechanism,
+                // will be launched in 1.6 seconds to help compensate animation.
                 if (viewAnimation)
                 {
                     setTimeout(async () => 
@@ -787,11 +796,12 @@ export default function CGGameplay(props)
             }
 
             // A Small react component that fires when the character has lose the round
+            // This shows your VP score, your character, the character you fought with, and the button to head back to the main menu
             function Loser()
             {
                 const [showStats, setShowStats] = useState(false);
 
-
+                // A delay to show your stats. Purely aesthetic
                 setTimeout(() => {
                     setShowStats(true)
                 }, 900)
@@ -837,15 +847,15 @@ export default function CGGameplay(props)
             }
 
             // A Small react component that fires when the character has won the round. Option to reroll their stats.
+             // This shows your VP score, your character, the character you fought with, and the button to head back to reroll OR to exit to the main screen
             function Win()
             {
                 const [showStats, setShowStats] = useState(false);
 
+                // A delay to show your stats. Purely aesthetic
                 setTimeout(() => {
                     setShowStats(true)
                 }, 900)
-
-
 
                 return (
                     <Box w='96.6%' h='90.4%' pos="absolute" top={'52.2px'} left={'15px'} color='white' style={{ 
@@ -944,6 +954,12 @@ export default function CGGameplay(props)
         const [localScores, setLocal] = useState([]);
         const [nationalScores, setNational] = useState([]);
     
+        /**
+         * Everytime that this component has been fired, it calls the database to retrieve all of the scores of each character
+         * sort them by wins, and sort them by descending. 
+         * 
+         * With that, it filters out what is yours, and what is everyone to their respected state.
+         */
         useEffect(() => {
 
             async function initialScoreSet()

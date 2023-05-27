@@ -22,6 +22,11 @@ const startupStyle =
     
 }
 
+/**
+ * This React component serves as as basis landing page for both of our major components,
+ * Login and Gameplay Window Component....Which are basically the content of the login
+ * functionality and the gameplay itself.
+ */
 export default function CrimsonOSLanding(props)
 {
     const [loginState, setLoginState] = useState(false);
@@ -33,13 +38,13 @@ export default function CrimsonOSLanding(props)
         // First thing first, let's determine whether or not if we are authenticated
         if (props.gameplay)
         {
-            //That means we are trying to access the game as an authenticated user, let's determine if you are not joking
+            //That means we are trying to access the game as an authenticated user.
             setGamePlayState(true)
         }
 
         else
         {
-            //Nope, we are just logging in, based on the given params
+            //Nope, we are just logging in and no authenticated yet, based on the given params
             setLoginState(true);
         }
         

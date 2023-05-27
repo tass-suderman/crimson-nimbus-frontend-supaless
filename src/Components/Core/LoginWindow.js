@@ -13,11 +13,22 @@ const style = {
     left: "23%"
 }
 
+/**
+ * Sets up the connection between this client application and to Supabase with our given Supabase URL and ANON PUBLIC Key.
+ */
 let supabase = createClient(
     process.env.REACT_APP_SUPABASE_URL,
     process.env.REACT_APP_ANON_PUBLIC_SUPABASE
 );
 
+/**
+ * This React Component served as a Login screen mechanism
+ * for users havent been authenticated yet and uses Discord to sign up.
+ * 
+ * Or for those who tried to go /gameplay but not authenticated, so you get
+ * sent back here.
+ * @returns 
+ */
 export default function LoginWindow()
 {
     const navigate = useNavigate();
@@ -39,12 +50,17 @@ export default function LoginWindow()
 
                         if(value.data.user && valueses.data.session.provider_token)
                         {
+                            // This basically says, if you have a userdata and a provider token already made (maybe you already signed up already),
+                            // you go straight ahead to the /gameplay
                             window.location.replace("/gameplay");
                         }
         
                     })
                 })
                 
+        // One of the failsafe the supabase uses,
+        // If you are not signed in, then you get routed to login.
+        // Signed In? Route to Gameplay.        
         supabase.auth.onAuthStateChange(async (event) => {
             if (event == "SIGNED_IN")
             {
@@ -60,13 +76,15 @@ export default function LoginWindow()
 
     }, [])
 
+    // A Click Handler that authenticates current users with Discord through Supabase.
     async function discordAuth(supabase)
     {
         const { data, error } = await supabase.auth.signInWithOAuth({
             provider: 'discord',
             options: {
+                // If you want to change the redirectTo based on your production or development stage, do it here.
               redirectTo: 'https://the-legendary-cloud-guardian.uc.r.appspot.com/gameplay',
-            // redirectTo: 'http://localhost:3000/gameplay',
+                // redirectTo: 'http://localhost:3000/gameplay',
             },
         })
 
