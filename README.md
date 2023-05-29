@@ -288,7 +288,7 @@ You got it cloned? Let us proceed with an IDE of your choice.
 ```
 REACT_APP_SUPABASE_URL=YOUR SUPABASE URL YOU JUST COPIED
 REACT_APP_ANON_PUBLIC_SUPABASE=YOUR SUPABASE ANON PUBLIC YOU JUST COPIED
-REACT_APP_FETCH_BASE=https://cloud-nimbus-backend.uc.r.appspot.com
+REACT_APP_FETCH_BASE=<YOUR BACK-END APP ENGINE URL>
 ```
 2. After that, save it.
 3. In `` src/Components/Core/LoginWindow.js`` and in this section of the code:
