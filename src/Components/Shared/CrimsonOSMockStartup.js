@@ -1,11 +1,10 @@
-import { Component, useEffect, useState}  from 'react';
-import { AbsoluteCenter, Box, Center, Container, Flex, Image, Text, VStack } from '@chakra-ui/react';
-import CrimsonOSLanding from '../Core/CrimsonOSLanding';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect }  from 'react';
+import { Center, Container, Flex, VStack } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
 const startupStyle = 
 {
-    backgroundImage: "url('./images/crimsonos/CrimsonOS_BG.png')",
+    backgroundImage: "url('./images/background/CrimsonOS_BG.png')",
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
     position: "relative"
@@ -14,8 +13,7 @@ const startupStyle =
 /**
  * This React component just emulates a mock MacOs like startup sequence.
  * This mostly runs for like 3 seconds before handling off to the login page.
- * @param {} props 
- * @returns 
+ * @returns
  */
 export default function CrimsonOSMockStartup()
 {
@@ -26,15 +24,15 @@ export default function CrimsonOSMockStartup()
         setInterval(() => {
             navigate('login');
         }, 3000)
-    }, [])
+    }, [navigate])
 
         return (
             <Container maxW="100%" h={"100vh"} padding={'0'} style={startupStyle}>
                 <Flex w={"100vw"} height={"100vh"} alignContent={"center"} justifyContent={"center"}>
                     <Center>
                         <VStack>
-                            <img src={'/images/crimsonos/crimsonos_startup.gif'} alt='' width={"75%"}/>
-                            <img src={'/images/crimsonos/crimsonos_service_Startup.gif'}  alt='' width={"20%"}/>
+                            <img src={'/images/loading/crimsonos_startup.gif'} alt='' width={"75%"}/>
+                            <img src={'/images/loading/crimsonos_service_Startup.gif'}  alt='' width={"20%"}/>
                         </VStack>
                     </Center>
                 </Flex>

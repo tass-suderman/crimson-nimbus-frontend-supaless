@@ -1,15 +1,24 @@
-import { Component, useEffect, useState}  from 'react';
-import { Box, Center, Container, Text, HStack, Stack, VStack, Image, Flex, Heading, FormControl, FormLabel, Input, Button, SimpleGrid, Spacer, Fade, Table,
+import { useEffect, useState}  from 'react';
+import {
+    Box,
+    Container,
+    Text,
+    HStack,
+    VStack,
+    Image,
+    Flex,
+    FormControl,
+    FormLabel,
+    Input,
+    SimpleGrid,
+    Table,
     Thead,
     Tbody,
-    Tfoot,
     Tr,
     Th,
     Td,
-    TableCaption,
     TableContainer } from '@chakra-ui/react';
 import axios from 'axios';
-import { Form } from 'react-router-dom';
 
 
 const style = {
@@ -23,10 +32,10 @@ const style = {
 
 
 /**
- * This is the main React component of the The Cloud Guardian
+ * This is the main React component of the Cloud Guardian
  * Includes fetching and setting data to the backend server.
  * 
- * @param {} props 
+ * @param props
  * @returns 
  */
 export default function CGGameplay(props)
@@ -49,17 +58,17 @@ export default function CGGameplay(props)
     {
         return (
             <Box w='96.6%' h='90.4%' pos="absolute" top={'52.2px'} left={'15px'} p={4} color='white' style={{ 
-                backgroundImage: "url('/images/crimsonos/game/cg_start.png')",
+                backgroundImage: "url('/images/background/cg_start.png')",
             }}>
                 <Container m={1} maxW="full" pos="absolute" top={'65%'}>
                     <Text fontSize='2xl' textAlign={'center'}>Our dear fighter, {props.name} has arrived. Shall we start the fight? </Text>
                 </Container>
                 <Box as='button' w={'25%'} pos="absolute" top={'80%'} left={'40%'} onClick={() => {setLogin(false); setMenu(true); } }>
-                    <img src={'/images/crimsonos/game/begin_fight.png'} alt="" />
+                    <img src={'/images/buttons/begin_fight.png'} alt="" />
                 </Box>
             </Box>
         )
-        
+
     }
 
     //React Subcomponent for the MenuPage
@@ -70,8 +79,7 @@ export default function CGGameplay(props)
 
         useEffect(() => {
         
-            // Get stuff from the database. Especially determining how many characters that this user has created
-            async function determineCustomCharNum()
+            function determineCustomCharNum()
             {
                 axios.get(`${process.env.REACT_APP_FETCH_BASE}/characters/user`).then(function (response)
                 {
@@ -89,13 +97,13 @@ export default function CGGameplay(props)
         return (
 
             <Box w='96.6%' h='90.4%' pos="absolute" top={'52.2px'} left={'15px'} p={4} color='white' style={{ 
-                backgroundImage: "url('/images/crimsonos/game/cg_menu.png')",
+                backgroundImage: "url('/images/background/cg_menu.png')",
             }}>
             
             {
                 loading &&
                 <div style={{display: "flex", gap: "20px", alignItems:"center", justifyContent: "center", position: "absolute", top: "32%", left: "18%", zIndex: 100}}>
-                    <img src='/images/crimsonos/crimsonos_processing.gif' alt=""/>
+                    <img src='/images/loading/crimsonos_processing.gif' alt=""/>
                 </div>
             }
 
@@ -103,15 +111,15 @@ export default function CGGameplay(props)
                 !loading &&
                 <HStack spacing='24px' ml={'20%'} mt={'40%'} >
                     <Box as='button' onClick={() => {setMenu(false); setViewChar(true);} }>
-                        <img src={'/images/crimsonos/game/menubutton/newcharbtn.png'} alt="" />
+                        <img src={'/images/buttons/newcharbtn.png'} alt="" />
                     </Box>
 
-                    <Box as='button' onClick={() => {setMenu(false); setViewBattle(true);}} disabled={numOfCustomChar <= 0 ? true : false}>
-                    <img src={ numOfCustomChar <= 0 ? '/images/crimsonos/game/menubutton/fightbtn2.png' : '/images/crimsonos/game/menubutton/fightbtn1.png'} alt="" />
+                    <Box as='button' onClick={() => {setMenu(false); setViewBattle(true);}} disabled={numOfCustomChar <= 0}>
+                    <img src={ numOfCustomChar <= 0 ? '/images/buttons/fightbtn2.png' : '/images/buttons/fightbtn1.png'} alt="" />
                     </Box>
 
                     <Box as='button' onClick={() => {setMenu(false); setViewScore(true); } }>
-                        <img src={'/images/crimsonos/game/menubutton/scorebtn.png'} alt="" />
+                        <img src={'/images/buttons/scorebtn.png'} alt="" />
                     </Box>
                 </HStack> 
             }
@@ -129,7 +137,7 @@ export default function CGGameplay(props)
        const [preview, setPreview] = useState(null);
        const [success, setSuccess] = useState(false);
        const [transWin, setTransWin] = useState(false);
-       const [transmit, setTrans] = useState('/images/crimsonos/crimsonos_transmit.gif')
+       const [transmit, setTrans] = useState('/images/loading/crimsonos_transmit.gif')
        
        //usestate for each individual attrbiute
        const [disableCombat, setDisCombat] = useState(false);
@@ -159,7 +167,7 @@ export default function CGGameplay(props)
        // Upon launching the Create Character page, we fetch the database to retrieve 8 random heroes
        // from the database.
         useEffect(() => {
-            async function fetchChars()
+            function fetchChars()
             {
                 //fetch stuff goes here....annddddddd
                 axios.get(`${process.env.REACT_APP_FETCH_BASE}/character/newroll`).then(function (response) {
@@ -200,7 +208,7 @@ export default function CGGameplay(props)
 
             // After posting, inform users that they have placed their characters to the DB.
             await axios.post(`${process.env.REACT_APP_FETCH_BASE}/character/new`, newUserData).then(() => {
-                setTrans('/images/crimsonos/trasnmit6.png');
+                setTrans('/images/loading/transmit6.png');
                 setSuccess(true);
             });
          }
@@ -209,11 +217,11 @@ export default function CGGameplay(props)
 
         return (
             <Box w='96.6%' h='90.4%' pos="absolute" top={'52.2px'} left={'15px'} p={4} color='white' style={{ 
-                backgroundImage: "url('/images/crimsonos/game/createfighter_bg.png')",
+                backgroundImage: "url('/images/background/createfighter_bg.png')",
             }}>
                 <Box as='button' onClick={() => {setMenu(true); setViewChar(false); } }>
-                        <img src={'/images/crimsonos/game/xbutton.png'} alt="" />
-                </Box>  
+                        <img src={'/images/buttons/xbutton.png'} alt="" />
+                </Box>
 
                 {
                         (!loading && transWin) &&
@@ -221,7 +229,7 @@ export default function CGGameplay(props)
                             {
                                 success &&
                                 <Box as='button' onClick={() => {setViewChar(false); setViewBattle(true) } } position={'absolute'} left={'35%'} bottom={'10%'}>
-                                    <img src={'/images/crimsonos/battleupbtn.png'} alt="" style={{width: "40%"}}/>
+                                    <img src={'/images/buttons/battleupbtn.png'} alt="" style={{width: "40%"}}/>
                                 </Box>  
 
                             }
@@ -232,7 +240,7 @@ export default function CGGameplay(props)
                 {
                     loading &&
                     <div style={{display: "flex", gap: "20px", alignItems:"center", justifyContent: "center", position: "absolute", top: "32%", left: "18%", zIndex: 100}}>
-                        <img src='/images/crimsonos/crimsonos_processing.gif' alt=""/>
+                        <img src='/images/loading/crimsonos_processing.gif' alt=""/>
                     </div>
                 }
 
@@ -242,7 +250,7 @@ export default function CGGameplay(props)
                     <Box id={'FORM CONTROL'} w='100%' >
  
                         <VStack mt={4}>
-                            <Image src={preview == null ? '/images/crimsonos/game/default-pic.png' : preview} boxSize='95px'  borderRadius='full' objectFit='cover'/>
+                            <Image src={preview == null ? '/images/icons/default-pic.png' : preview} boxSize='95px'  borderRadius='full' objectFit='cover'/>
                             <form style={{display: "flex", gap: "25px", flexWrap: "wrap", width: "80%"}} onSubmit={handleSubmit}>
                                 <SimpleGrid columns={2} spacing={20} alignContent={'center'} justifyContent={'center'}>
                                     <FormControl isRequired>
@@ -256,15 +264,15 @@ export default function CGGameplay(props)
                                 </SimpleGrid>
                                 {/* FOR GRABBING POWER  */}
                                 <SimpleGrid columns={2} spacing={10}>
-                                    <VStack h={'90%'} overflowY={'scroll'} pl={'5'} style={{direction: "rtl"}}>
+                                    <VStack h={'100%'} width={'90%'} spacing={'3px'} pl={'5'} style={{direction: "rtl"}}>
                                         <Flex gap={'25px'}>
                                             <Box as='button' type={'button'} disabled={disableCombat} onClick={() => {
                                                 setInfCombat(rerollChars[currentArrayIndex].combat);
                                                 setDisCombat(true);
-                                                setIndex(currentArrayIndex == 7 ? currentArrayIndex :currentArrayIndex + 1);
+                                                setIndex(currentArrayIndex === 7 ? currentArrayIndex :currentArrayIndex + 1);
                                              }} >
-                                                <img src={disableCombat ? '/images/crimsonos/game/SELECTION/combat2.png' : '/images/crimsonos/game/SELECTION/combat1.png'}/>
-                                            </Box>  
+                                                <img alt="" src={disableCombat ? '/images/buttons/combat2.png' : '/images/buttons/combat1.png'}/>
+                                            </Box>
                                             <FormControl isRequired>
                                                 <Input type='text' name='combat' disabled={true} value={infCombat ?? 0} placeholder=''/>
                                             </FormControl>
@@ -273,9 +281,9 @@ export default function CGGameplay(props)
                                             <Box as='button' type={'button'} disabled={disableDurability} onClick={() => {
                                                 setInfDura(rerollChars[currentArrayIndex].durability);
                                                 setDisDura(true);
-                                                setIndex(currentArrayIndex == 7 ? currentArrayIndex :currentArrayIndex + 1);
+                                                setIndex(currentArrayIndex === 7 ? currentArrayIndex :currentArrayIndex + 1);
                                              }} >
-                                                <img src={disableDurability ? '/images/crimsonos/game/SELECTION/Durability2.png' : '/images/crimsonos/game/SELECTION/Durability1.png'}/>
+                                                <img alt="" src={disableDurability ? '/images/buttons/durability2.png' : '/images/buttons/durability1.png'}/>
                                             </Box>  
                                             <FormControl isRequired>
                                                 <Input type='text' name='durability' disabled={true} value={infDurability ?? 0} placeholder=''/>
@@ -286,9 +294,9 @@ export default function CGGameplay(props)
                                             <Box as='button' type={'button'} disabled={disableHeight} onClick={() => {
                                                 setInfHeight(rerollChars[currentArrayIndex].height);
                                                 setDisHeight(true);
-                                                setIndex(currentArrayIndex == 7 ? currentArrayIndex :currentArrayIndex + 1);
+                                                setIndex(currentArrayIndex === 7 ? currentArrayIndex :currentArrayIndex + 1);
                                              }} >
-                                                <img src={disableHeight ? '/images/crimsonos/game/SELECTION/height2.png' : '/images/crimsonos/game/SELECTION/height1.png'}/>
+                                                <img alt="" src={disableHeight ? '/images/buttons/height2.png' : '/images/buttons/height1.png'}/>
                                             </Box>  
                                             <FormControl isRequired>
                                                 <Input type='text' name='height' disabled={true} value={infHeight ?? 0} placeholder=''/>
@@ -298,9 +306,9 @@ export default function CGGameplay(props)
                                             <Box as='button' type={'button'} disabled={disableIntelligence} onClick={() => {
                                                 setInfIntelli(rerollChars[currentArrayIndex].intelligence);
                                                 setDisIntelli(true);
-                                                setIndex(currentArrayIndex == 7 ? currentArrayIndex :currentArrayIndex + 1);
+                                                setIndex(currentArrayIndex === 7 ? currentArrayIndex :currentArrayIndex + 1);
                                              }} >
-                                                <img src={disableIntelligence ? '/images/crimsonos/game/SELECTION/intelligence2.png' : '/images/crimsonos/game/SELECTION/intelligence1.png'}/>
+                                                <img alt="" src={disableIntelligence ? '/images/buttons/intelligence2.png' : '/images/buttons/intelligence1.png'}/>
                                             </Box>  
                                             <FormControl isRequired>
                                                 <Input type='text' name='intelligence' disabled={true} value={infIntelligence ?? 0} placeholder=''/>
@@ -313,7 +321,7 @@ export default function CGGameplay(props)
                                                 setDisPower(true);
                                                 setIndex(currentArrayIndex + 1);
                                              }} >
-                                                <img src={disablePower ? '/images/crimsonos/game/SELECTION/power2.png' : '/images/crimsonos/game/SELECTION/power1.png'}/>
+                                                <img alt="" src={disablePower ? '/images/buttons/power2.png' : '/images/buttons/power1.png'}/>
                                             </Box>  
                                             <FormControl isRequired>
                                                 <Input type='text' name='power' disabled={true} value={infPower ?? 0} placeholder=''/>
@@ -324,19 +332,21 @@ export default function CGGameplay(props)
                                             <Box as='button' type={'button'} disabled={disableSpeed}  onClick={() => {
                                                 setInfSpeed(rerollChars[currentArrayIndex].speed);
                                                 setDisSpeed(true);
-                                                setIndex(currentArrayIndex == 7 ? currentArrayIndex :currentArrayIndex + 1);
+                                                setIndex(currentArrayIndex === 7 ? currentArrayIndex :currentArrayIndex + 1);
                                              }} >
-                                                <img src={disableSpeed ? '/images/crimsonos/game/SELECTION/speed2.png' : '/images/crimsonos/game/SELECTION/speed1.png'}/>
-                                            </Box>  
-                                            <Input type='text' name='speed' disabled={true} value={infSpeed ?? 0} placeholder=''/>
+                                                <img alt="" src={disableSpeed ? '/images/buttons/speed2.png' : '/images/buttons/speed1.png'}/>
+                                            </Box>
+                                            <FormControl isRequired>
+                                             <Input type='text' name='speed' disabled={true} value={infSpeed ?? 0} placeholder=''/>
+                                            </FormControl>
                                         </Flex>
                                         <Flex gap={'25px'}>
                                             <Box as='button' type={'button'} disabled={disableStrength} onClick={() => {
                                                 ssetInfsStren(rerollChars[currentArrayIndex].strength);
                                                 setDisStren(true);
-                                                setIndex(currentArrayIndex == 7 ? currentArrayIndex :currentArrayIndex + 1);
+                                                setIndex(currentArrayIndex === 7 ? currentArrayIndex :currentArrayIndex + 1);
                                              }} >
-                                                <img src={disableStrength ? '/images/crimsonos/game/SELECTION/Strength2.png' : '/images/crimsonos/game/SELECTION/Strength1.png'}/>
+                                                <img alt="" src={disableStrength ? '/images/buttons/strength2.png' : '/images/buttons/strength1.png'}/>
                                             </Box>  
                                             <FormControl isRequired>
                                                 <Input type='text' name='strength' disabled={true} value={infStrength ?? 0} placeholder=''/>
@@ -346,9 +356,9 @@ export default function CGGameplay(props)
                                             <Box as='button' type={'button'} disabled={disableWeight} onClick={() => {
                                                 setInfWeight(rerollChars[currentArrayIndex].weight);
                                                 setDisWeight(true);
-                                                setIndex(currentArrayIndex == 7 ? currentArrayIndex :currentArrayIndex + 1);
+                                                setIndex(currentArrayIndex === 7 ? currentArrayIndex :currentArrayIndex + 1);
                                              }} >
-                                                <img src={disableWeight ? '/images/crimsonos/game/SELECTION/weight2.png' : '/images/crimsonos/game/SELECTION/weight1.png'}/>
+                                                <img alt="" src={disableWeight ? '/images/buttons/weight2.png' : '/images/buttons/weight1.png'}/>
                                             </Box>
                                             <FormControl isRequired>
                                                 <Input type='text' name='weight' disabled={true} value={infWeight ?? 0} placeholder=''/>
@@ -376,7 +386,7 @@ export default function CGGameplay(props)
                                 </SimpleGrid>
                                 
                                 <Box as='button' position={'absolute'} top={'93%'} left={'42%'} type={'submit'} disabled={transWin}>
-                                    <img src={'/images/crimsonos/game/SELECTION/transmitbtn.png'} style={{width: "30%"}}/>
+                                    <img alt="" src={'/images/buttons/transmitbtn.png'} style={{width: "30%"}}/>
                                 </Box> 
                             </form>
 
@@ -453,7 +463,7 @@ export default function CGGameplay(props)
                 // to change the current character information
                 function changeCurrentCharacter(id)
                 {
-                    setCurUserChar(characterArray.find(item => item.id == id))
+                    setCurUserChar(characterArray.find(item => item.id === id))
                 }
 
                 //If the animation to run the fancy "Let's us fight" banner is set to true, this fires in 1.6 seconds to switch scene and call fetch battle.
@@ -470,15 +480,15 @@ export default function CGGameplay(props)
 
 
                 return (
-                    <Box w='96.6%' h='90.4%'pos="absolute" top={'52.2px'} left={'15px'} color='white' style={{ backgroundImage: "url('/images/crimsonos/game/choose_character_bg.png')"}} id={'bruh'}>
+                    <Box w='96.6%' h='90.4%' pos="absolute" top={'52.2px'} left={'15px'} color='white' style={{ backgroundImage: "url('/images/background/choose_character_bg.png')"}} id={'bruh'}>
                          <Box position={'absolute'}  as='button' onClick={() => {setMenu(true); setViewBattle(false); setCharSelection(false); }} p={'3'} zIndex={'100000'}>
-                                <img src={'/images/crimsonos/game/xbutton.png'} alt="" />
+                                <img src={'/images/buttons/xbutton.png'} alt="" />
                         </Box>  
                         
                         {
                             viewAnimation &&
                             <Box width='' id='letsfight'>
-                                <img src="/images/crimsonos/game/charselection/letthefight.png"/>
+                                <img src="/images/charselection/letthefight.png" alt=""/>
                             </Box>
                         }
                         
@@ -488,9 +498,9 @@ export default function CGGameplay(props)
                             <VStack p={0} m={0} w='100%'>
                                 <HStack w='100%'>
                                         {
-                                            characterArray.length == 0 &&
+                                            characterArray.length === 0 &&
                                              <Box mt={'100'} ml={'25%'} p={'4'} justifyContent={'center'} style={{backgroundColor: "rgba(0, 0, 0, .5) "}}>
-                                                <img src={'/images/crimsonos/game/charselection/notfound.png'}  />
+                                                <img src={'/images/charselection/notfound.png'}   alt=""/>
                                              </Box>
                                         }
                                         {
@@ -513,7 +523,7 @@ export default function CGGameplay(props)
                                         {
                                             characterArray.length > 0 &&
                                             <Box pt={'100'} pl={'20'}>
-                                                <Image src={curUserChar == null ? '/images/crimsonos/game/charselection/unknown.png' : curUserChar.url} boxSize='300px' objectFit='cover'/>
+                                                <Image src={curUserChar == null ? '/images/charselection/unknown.png' : curUserChar.url} boxSize='300px' objectFit='cover'/>
                                                 <Text fontSize='3xl' style={{textShadow: "3px 3px black"}}>{curUserChar == null ? "" : curUserChar.name}</Text>
                                             </Box>
                                         }
@@ -523,7 +533,7 @@ export default function CGGameplay(props)
                                     (curUserChar != null && characterArray.length > 0) &&
                                     <Box w={'full'} pt={'5'} pl={550}>
                                          <Box as='button' type={'button'} position={'absolute'} top={'70%'} left={'20%'} onClick={() => {setAnimation(true) }}>
-                                            <img src={'/images/crimsonos/game/charselection/fightbtn.png'} style={{width: "80%"}}/>
+                                            <img src={'/images/buttons/fightbtn.png'} style={{width: "80%"}} alt=""/>
                                         </Box> 
                                         <Box  w={'auto'}  style={{backgroundColor: "rgba(0, 0, 0, .5) "}} p={'2'}>
                                             
@@ -553,7 +563,7 @@ export default function CGGameplay(props)
             }
 
              // React Sub-sub component for selecting your characters!
-             function FightSelectionView(props)
+             function FightSelectionView()
              {
 
                 // This series of setTimeouts are fired to delay the scene switching and
@@ -591,7 +601,7 @@ export default function CGGameplay(props)
 
 
                     return (
-                        <Box w='96.6%' h='90.4%'pos="absolute" top={'52.2px'} left={'15px'} color='white' style={{ backgroundImage: "url('/images/crimsonos/game/battleground_bg.png')"}} id={'bruh'}>
+                        <Box w='96.6%' h='90.4%' pos="absolute" top={'52.2px'} left={'15px'} color='white' style={{ backgroundImage: "url('/images/background/battleground_bg.png')"}} id={'bruh'}>
                                 {
                                     (showFlashBang) &&
                                     <Box w={'100%'} h={'100%'} position="absolute" zIndex={'1000'} bg='white' id='flashbang'></Box>
@@ -656,28 +666,28 @@ export default function CGGameplay(props)
 
                 return (
                     <Box w='96.6%' h='90.4%' pos="absolute" top={'52.2px'} left={'15px'} color='white' style={{ 
-                        backgroundImage: "url('/images/crimsonos/game/rerollstat_bg.png')",
+                        backgroundImage: "url('/images/background/rerollstat_bg.png')",
                     }}>
                         {
                             viewAnimation &&
                             <Box width='' id='letsfight'>
-                                <img src="/images/crimsonos/game/charselection/letthefight.png"/>
+                                <img alt="" src="/images/charselection/letthefight.png"/>
                             </Box>
                         }
                         {
                             !loading &&
                             <div>
                                 <Box as='button' type={'button'} position={'absolute'} top={'26%'} left={'40%'} onClick={() => {setAnimation(true) }} style={{width: "20%"}}>
-                                    <img src={'/images/crimsonos/game/winloseselection/contbtn.png'}/>
+                                    <img alt="" src={'/images/buttons/contbtn.png'}/>
                                 </Box> 
                                 <HStack>
                                     <SimpleGrid columns={2} spacing={10} mt={'12%'} ml={'5%'}>
                                         <VStack h={'90%'} w={'75%'} style={{direction: "rtl"}}>
-                                            <Image src={curUserChar ?  curUserChar.url : '/images/crimsonos/game/charselection/unknown.png'}  borderRadius='full' boxSize='130px' />
+                                            <Image fallbackSrc="/images/icons/default-pic.png" src={curUserChar ?  curUserChar.url : '/images/charselection/unknown.png'}  borderRadius='full' boxSize='130px' />
                                             <Text fontSize='xl'>{curUserChar ? curUserChar.name : "?"}</Text>
                                             <Flex gap={'25px'}>
                                                 <Box as='button' type={'button'} disabled={disableAll} onClick={() => {rerollChar(1)}} style={{width: "80%"}}>
-                                                    <img src={disableAll ? '/images/crimsonos/game/SELECTION/height2.png' : '/images/crimsonos/game/SELECTION/height1.png'} />
+                                                    <img alt="" src={disableAll ? '/images/buttons/height2.png' : '/images/buttons/height1.png'} />
                                                 </Box>  
                                                 <FormControl isRequired style={{width: "80%"}}>
                                                     <Input type='text' name='combat' disabled={true} value={curUserChar ? curUserChar.height : ""} placeholder=''/>
@@ -686,7 +696,7 @@ export default function CGGameplay(props)
 
                                             <Flex gap={'25px'}>
                                                 <Box as='button' type={'button'} disabled={disableAll} onClick={() => {rerollChar(2)}} style={{width: "80%"}}>
-                                                    <img src={disableAll ? '/images/crimsonos/game/SELECTION/weight2.png' : '/images/crimsonos/game/SELECTION/weight1.png'} />
+                                                    <img alt="" src={disableAll ? '/images/buttons/weight2.png' : '/images/buttons/weight1.png'} />
                                                 </Box>  
                                                 <FormControl isRequired style={{width: "80%"}}>
                                                     <Input type='text' name='combat' disabled={true} value={curUserChar ? curUserChar.weight : ""} placeholder=''/>
@@ -695,7 +705,7 @@ export default function CGGameplay(props)
 
                                             <Flex gap={'25px'}>
                                                 <Box as='button' type={'button'} disabled={disableAll} onClick={() => {rerollChar(3)}} style={{width: "80%"}}>
-                                                    <img src={disableAll ? '/images/crimsonos/game/SELECTION/intelligence2.png' : '/images/crimsonos/game/SELECTION/intelligence1.png'} />
+                                                    <img alt="" src={disableAll ? '/images/buttons/intelligence2.png' : '/images/buttons/intelligence1.png'} />
                                                 </Box>  
                                                 <FormControl isRequired style={{width: "80%"}}>
                                                     <Input type='text' name='combat' disabled={true} value={curUserChar ? curUserChar.intelligence : ""} placeholder=''/>
@@ -704,7 +714,7 @@ export default function CGGameplay(props)
 
                                             <Flex gap={'25px'}>
                                                 <Box as='button' type={'button'} disabled={disableAll} onClick={() => {rerollChar(4)}} style={{width: "80%"}}>
-                                                    <img src={disableAll ? '/images/crimsonos/game/SELECTION/Strength2.png' : '/images/crimsonos/game/SELECTION/Strength1.png'} />
+                                                    <img alt="" src={disableAll ? '/images/buttons/strength2.png' : '/images/buttons/strength1.png'} />
                                                 </Box>  
                                                 <FormControl isRequired style={{width: "80%"}}>
                                                     <Input type='text' name='combat' disabled={true} value={curUserChar ? curUserChar.strength : ""} placeholder=''/>
@@ -713,7 +723,7 @@ export default function CGGameplay(props)
 
                                             <Flex gap={'25px'}>
                                                 <Box as='button' type={'button'} disabled={disableAll} onClick={() => {rerollChar(5)}} style={{width: "80%"}}>
-                                                    <img src={disableAll ? '/images/crimsonos/game/SELECTION/speed2.png' : '/images/crimsonos/game/SELECTION/speed1.png'} />
+                                                    <img alt="" src={disableAll ? '/images/buttons/speed2.png' : '/images/buttons/speed1.png'} />
                                                 </Box>  
                                                 <FormControl isRequired style={{width: "80%"}}>
                                                     <Input type='text' name='combat' disabled={true} value={curUserChar ? curUserChar.speed : ""} placeholder=''/>
@@ -722,7 +732,7 @@ export default function CGGameplay(props)
 
                                             <Flex gap={'25px'}>
                                                 <Box as='button' type={'button'} disabled={disableAll} onClick={() => {rerollChar(6)}} style={{width: "80%"}}>
-                                                    <img src={disableAll ? '/images/crimsonos/game/SELECTION/Durability2.png' : '/images/crimsonos/game/SELECTION/Durability1.png'} />
+                                                    <img alt="" src={disableAll ? '/images/buttons/durability2.png' : '/images/buttons/durability1.png'} />
                                                 </Box>  
                                                 <FormControl isRequired style={{width: "80%"}}>
                                                     <Input type='text' name='combat' disabled={true} value={curUserChar ? curUserChar.durability : ""} placeholder=''/>
@@ -731,7 +741,7 @@ export default function CGGameplay(props)
 
                                             <Flex gap={'25px'}>
                                                 <Box as='button' type={'button'} disabled={disableAll} onClick={() => {rerollChar(7)}} style={{width: "80%"}}>
-                                                    <img src={disableAll ? '/images/crimsonos/game/SELECTION/combat2.png' : '/images/crimsonos/game/SELECTION/combat1.png'} />
+                                                    <img  alt="" src={disableAll ? '/images/buttons/combat2.png' : '/images/buttons/combat1.png'} />
                                                 </Box>  
                                                 <FormControl isRequired style={{width: "80%"}}>
                                                     <Input type='text' name='combat' disabled={true} value={curUserChar ? curUserChar.combat : ""} placeholder=''/>
@@ -739,7 +749,7 @@ export default function CGGameplay(props)
                                             </Flex>
                                             <Flex gap={'25px'}>
                                                 <Box as='button' type={'button'} disabled={disableAll} onClick={() => {rerollChar(8)}} style={{width: "80%"}}>
-                                                    <img src={disableAll ? '/images/crimsonos/game/SELECTION/power2.png' : '/images/crimsonos/game/SELECTION/power1.png'} />
+                                                    <img alt=""  src={disableAll ? '/images/buttons/power2.png' : '/images/buttons/power1.png'} />
                                                 </Box>  
                                                 <FormControl isRequired style={{width: "80%"}}>
                                                     <Input type='text' name='combat' disabled={true} value={curUserChar ? curUserChar.power : ""} placeholder=''/>
@@ -748,7 +758,7 @@ export default function CGGameplay(props)
                                         </VStack>
 
                                         <VStack h={'90%'} w={'100%'} pl={'5'} gap={'4px'}>
-                                            <Image src={referenceChar ? `${referenceChar.imagePrefix}/lg/${referenceChar.imageSuffix}` : '/images/crimsonos/game/charselection/unknown.png'}  borderRadius='full' boxSize='130px' />
+                                            <Image src={referenceChar ? `${referenceChar.imagePrefix}/lg/${referenceChar.imageSuffix}` : '/images/charselection/unknown.png'}  borderRadius='full' boxSize='130px' />
                                             <Text fontSize='xl'>{referenceChar ? referenceChar.name : "?"}</Text>
                                             <Flex gap={'25px'}>
                                                 <Text fontSize='xl'>Height: {referenceChar ? referenceChar.height : "?"} </Text>
@@ -808,11 +818,11 @@ export default function CGGameplay(props)
 
                 return (
                     <Box w='96.6%' h='90.4%' pos="absolute" top={'52.2px'} left={'15px'} color='white' style={{ 
-                        backgroundImage: "url('/images/crimsonos/game/youlosebg.png')",
+                        backgroundImage: "url('/images/background/youlosebg.png')",
                     }}>
  
                             <Box width='' id='fightsplash'>
-                                <img src="/images/crimsonos/game/charselection/youlose.png"/>
+                                <img alt="You Lose!" src="/images/charselection/youlose.png"/>
                             </Box>
 
                             
@@ -820,7 +830,7 @@ export default function CGGameplay(props)
                             
                                 <Box position={'absolute'} w={'100%'} h={'100%'}>
                                     <Box as='button' position={'absolute'} p={'4'} mt={'61%'} onClick={() => {setMenu(true); setViewLose(false); setViewBattle(false);} } zIndex={'100000'}>
-                                        <img src={'/images/crimsonos/game/winloseselection/scoreboard.png'} alt="" width={'30%'}/>
+                                        <img src={'/images/buttons/scoreboard.png'} alt="" width={'30%'}/>
                                     </Box>  
                                     <HStack  mt={'3%'} ml={'2%'} position={'absolute'} style={{backgroundColor: "rgba(0, 0, 0, .5) "}} p={'20px'} w={'auto'} h={'auto'} borderRadius='lg'>
                                         <Image src={ battle.c1.url } objectFit={'cover'}  borderRadius='full' boxSize={'175px'}/>
@@ -859,14 +869,14 @@ export default function CGGameplay(props)
 
                 return (
                     <Box w='96.6%' h='90.4%' pos="absolute" top={'52.2px'} left={'15px'} color='white' style={{ 
-                        backgroundImage: "url('/images/crimsonos/game/youwinbg.png')",
+                        backgroundImage: "url('/images/background/youwinbg.png')",
                     }}>
                             <Box position={'absolute'}  as='button' onClick={() => {setMenu(true); setViewWin(false); setViewBattle(false) }} p={'3'} zIndex={'100000'}>
-                                <img src={'/images/crimsonos/game/xbutton.png'} alt="" />
+                                <img src={'/images/buttons/xbutton.png'} alt="" />
                             </Box>  
 
                             <Box width='' id='fightsplash'>
-                                <img src="/images/crimsonos/game/charselection/youwin.png"/>
+                                <img alt="" src="/images/charselection/youwin.png"/>
                             </Box>
 
                             { 
@@ -875,7 +885,7 @@ export default function CGGameplay(props)
                                 <Box position={'absolute'} w={'100%'} h={'100%'}>
                                     <Box as='button' position={'absolute'} p={'4'} mt={'61%'} onClick={() => {setViewWin(false); setViewFight(false); setViewRerollStats(true); setDisableAll(false);
                 setRefChar(null);} } zIndex={'100000'}>
-                                        <img src={'/images/crimsonos/game/winloseselection/rerollbtn.png'} alt="" width={'30%'}/>
+                                        <img src={'/images/buttons/rerollbtn.png'} alt="" width={'30%'}/>
                                     </Box>  
                                     <HStack  mt={'3%'} ml={'2%'} position={'absolute'} style={{backgroundColor: "rgba(0, 0, 0, .5) "}} p={'20px'} w={'auto'} h={'auto'} borderRadius='lg'>
                                         <Image src={ battle.c1.url } objectFit={'cover'}  borderRadius='full' boxSize={'175px'}/>
@@ -909,7 +919,7 @@ export default function CGGameplay(props)
                         loading &&
                         <Box w='96.6%' h='90.4%' pos="absolute" top={'52.2px'} left={'15px'} p={4} color='white'>
                             <div style={{display: "flex", gap: "20px", alignItems:"center", justifyContent: "center", position: "absolute", top: "32%", left: "18%", zIndex: 100}}>
-                                <img src='/images/crimsonos/crimsonos_processing.gif' alt=""/>
+                                <img src='/images/loading/crimsonos_processing.gif' alt=""/>
                             </div>
                         </Box>
                     }
@@ -983,24 +993,24 @@ export default function CGGameplay(props)
 
         return (
             <Box w='96.6%' h='90.4%' pos="absolute" top={'52.2px'} left={'15px'} p={4} color='white' style={{ 
-                backgroundImage: "url('/images/crimsonos/game/score_bg.png')",
+                backgroundImage: "url('/images/background/score_bg.png')",
             }}>
                 {
                     loading &&
                     <div style={{display: "flex", gap: "20px", alignItems:"center", justifyContent: "center", position: "absolute", top: "32%", left: "18%", zIndex: 100}}>
-                        <img src='/images/crimsonos/crimsonos_processing.gif' alt=""/>
+                        <img src='/images/loading/crimsonos_processing.gif' alt=""/>
                     </div>
                 }
                     <Box as='button' onClick={() => {setMenu(true); setViewScore(false);} }>
-                        <img src={'/images/crimsonos/game/xbutton.png'} alt="" />
+                        <img src={'/images/buttons/xbutton.png'} alt="" />
                     </Box>  
 
                     <HStack position={'absolute'} w={'50%'} mt={'60px'} ml={'22%'} zIndex={'100000'}>
                         <Box as='button' onClick={() => {setViewLocalScore(true); setViewNationalScore(false)} } w={'50%'}>
-                                <img src={ viewLocalScore ? '/images/crimsonos/game/scoreboard/local2.png' : '/images/crimsonos/game/scoreboard/local1.png'} alt="" w={'50%'}/>
+                                <img src={ viewLocalScore ? '/images/buttons/local2.png' : '/images/buttons/local1.png'} alt="" w={'50%'}/>
                         </Box>
                         <Box as='button' onClick={() => {setViewLocalScore(false); setViewNationalScore(true)} } w={'50%'}>
-                                <img src={ viewNationalScore ? '/images/crimsonos/game/scoreboard/national2.png' : '/images/crimsonos/game/scoreboard/national1.png'} alt=""/>
+                                <img src={ viewNationalScore ? '/images/buttons/national2.png' : '/images/buttons/national1.png'} alt=""/>
                         </Box>    
                     </HStack>
 
@@ -1027,12 +1037,12 @@ export default function CGGameplay(props)
                                     {
                                         localScores.map(indScores => (
                                             <Tr  style={{backgroundColor: "rgba(0, 0, 0, .5) "}} p={'20px'}>
-                                                <Td><Image src={indScores.url} boxSize='50px'  borderRadius='full' objectFit='cover'/></Td>
+                                                <Td><Image fallbackSrc="/images/icons/default-pic.png" src={indScores.url} boxSize='50px'  borderRadius='full' objectFit='cover'/></Td>
                                                 <Td><Text textAlign={'center'} style={{textShadow: "3px 3px black"}}>{indScores.name}</Text></Td>
                                                 <Td><Text textAlign={'center'} style={{textShadow: "3px 3px black"}}>{indScores.wins}</Text></Td>
                                                 <Td>
                                                     <HStack justifyContent={'center'}>
-                                                        <Image src={indScores.creator.avatar} boxSize='50px'  borderRadius='full' objectFit='cover'/>
+                                                        <Image src={indScores.creator.avatar} fallbackSrc="/images/icons/default-pic.png" boxSize='50px'  borderRadius='full' objectFit='cover'/>
                                                         <Text textAlign={'center'} style={{textShadow: "3px 3px black"}}>{indScores.creator.userName}</Text>
                                                     </HStack>
                                                 </Td>
@@ -1070,12 +1080,12 @@ export default function CGGameplay(props)
                                     {
                                         nationalScores.map(indScores => (
                                             <Tr  style={{backgroundColor: "rgba(0, 0, 0, .5) "}} p={'20px'}>
-                                                <Td><Image src={indScores.url} boxSize='50px'  borderRadius='full' objectFit='cover'/></Td>
+                                                <Td><Image fallbackSrc="/images/icons/default-pic.png" src={indScores.url} boxSize='50px'  borderRadius='full' objectFit='cover'/></Td>
                                                 <Td><Text textAlign={'center'} style={{textShadow: "3px 3px black"}}>{indScores.name}</Text></Td>
                                                 <Td><Text textAlign={'center'} style={{textShadow: "3px 3px black"}}>{indScores.wins}</Text></Td>
                                                 <Td>
                                                     <HStack justifyContent={'center'}>
-                                                        <Image src={indScores.creator.avatar} boxSize='50px'  borderRadius='full' objectFit='cover'/>
+                                                        <Image fallbackSrc="/images/icons/default-pic.png" src={indScores.creator.avatar} boxSize='50px'  borderRadius='full' objectFit='cover'/>
                                                         <Text textAlign={'center'} style={{textShadow: "3px 3px black"}}>{indScores.creator.userName}</Text>
                                                     </HStack>
                                                 </Td>
@@ -1122,7 +1132,7 @@ export default function CGGameplay(props)
                 login &&
                 <HomePage/>
             }
-            <img src='/images/crimsonos/CrimsonOS_Window_BASE.png' alt=""/>
+            <img src='/images/background/CrimsonOS_Window_BASE.png' alt=""/>
         </Container>
     )
 }

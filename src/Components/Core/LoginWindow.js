@@ -1,8 +1,6 @@
-import { Component, useEffect, useState}  from 'react';
-import { Box, Center, Container, Text } from '@chakra-ui/react';
-import { createClient } from '@supabase/supabase-js'
-import { Auth, ThemeSupa } from '@supabase/auth-ui-react'
-import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect }  from 'react';
+import { Box, Container } from '@chakra-ui/react';
+import {useCookies} from 'react-cookie'
 
 const style = {
     minWidth: "1000px",
@@ -14,14 +12,6 @@ const style = {
 }
 
 /**
- * Sets up the connection between this client application and to Supabase with our given Supabase URL and ANON PUBLIC Key.
- */
-let supabase = createClient(
-    process.env.REACT_APP_SUPABASE_URL,
-    process.env.REACT_APP_ANON_PUBLIC_SUPABASE
-);
-
-/**
  * This React Component served as a Login screen mechanism
  * for users havent been authenticated yet and uses Discord to sign up.
  * 
@@ -29,76 +19,46 @@ let supabase = createClient(
  * sent back here.
  * @returns 
  */
-export default function LoginWindow()
+export default function LoginWindow({ getUserData })
 {
-    const navigate = useNavigate();
-
+    const cookies = useCookies(['user']);
     const bgStyle = {
-        backgroundImage: "url('/images/crimsonos/crimson_signin.png')",
+        backgroundImage: "url('/images/background/crimson_signin.png')",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
     }
 
 
-    useEffect(async () => {
-        //Now, we configure with the supabase to authenticate you!
+    useEffect( () => {
 
-                //Check whether or not you are already authenticated
-                await supabase.auth.getUser().then(async (value) => {
-
-                    await supabase.auth.getSession().then((valueses) => {
-
-                        if(value.data.user && valueses.data.session.provider_token)
-                        {
-                            // This basically says, if you have a userdata and a provider token already made (maybe you already signed up already),
-                            // you go straight ahead to the /gameplay
-                            window.location.replace("/gameplay");
-                        }
-        
-                    })
-                })
-                
-        // One of the failsafe the supabase uses,
-        // If you are not signed in, then you get routed to login.
-        // Signed In? Route to Gameplay.        
-        supabase.auth.onAuthStateChange(async (event) => {
-            if (event == "SIGNED_IN")
-            {
-                navigate('/gameplay')
+        if(!cookies.user) {
+            const search = new URLSearchParams(window.location.hash.substring(1));
+            if (search.size === 4) {
+                const tokenType = search.get('token_type') ?? false;
+                const accessToken = search.get('access_token') ?? false;
+                const expiryRes = search.get('expires_in') ?? false;
+                const expiry = expiryRes ? parseInt(expiryRes, 10) : 0;
+                if (tokenType && accessToken && expiry) {
+                    getUserData({tokenType, accessToken, expiry});
+                }
             }
-            else
-            {
-                //Forward to login
-                navigate('/login');
-
-            }
-        })
+        }
+        else{
+            window.location = '/gameplay'
+        }
 
     }, [])
 
-    // A Click Handler that authenticates current users with Discord through Supabase.
-    async function discordAuth(supabase)
-    {
-        const { data, error } = await supabase.auth.signInWithOAuth({
-            provider: 'discord',
-            options: {
-                // If you want to change the redirectTo based on your production or development stage, do it here.
-              redirectTo: 'https://the-legendary-cloud-guardian.uc.r.appspot.com/gameplay',
-                // redirectTo: 'http://localhost:3000/gameplay',
-            },
-        })
-
-    }
 
 
     return(
         <Container style={style}>
             <Box w='96.6%' h='90.4%' pos="absolute" top={'52.2px'} left={'15px'} p={4} color='white' style={bgStyle}>
-                <Box as='button' w={'25%'} pos="absolute" top={'85%'} left={'76%'} onClick={() => {discordAuth(supabase)} }>
-                    <img src={'/images/crimsonos/discord_loginbutton.png'} alt="" />
+                <Box as='button' w={'25%'} pos="absolute" top={'85%'} left={'76%'} onClick={() => window.location=process.env.REACT_APP_DISCORD_LOGIN_URL }>
+                    <img src={'/images/buttons/discord_loginbutton.png'} alt="" />
                 </Box>
             </Box>
-            <img src='/images/crimsonos/CrimsonOS_Window_BASE.png' alt=""/>
+            <img src='/images/background/CrimsonOS_Window_BASE.png' alt=""/>
         </Container>
     )
 }
