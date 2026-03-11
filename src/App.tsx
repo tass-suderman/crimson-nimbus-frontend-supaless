@@ -1,12 +1,13 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import CrimsonOSMockStartup from './components/Shared/CrimsonOSMockStartup';
-import CrimsonOSLanding from './components/Core/CrimsonOSLanding';
+import CrimsonOSMockStartup from './components/CrimsonOSMockStartup';
+import GameplayWindow from "./components/GameplayWindow";
+import LoginWindow from "./components/LoginWindow";
 
 function App() {
 	const router = createBrowserRouter([
 		{ path: '/', element: <CrimsonOSMockStartup />},
-		{ path: '/gameplay', element: <CrimsonOSLanding gameplay={true}/>},
-		{ path: '/login', element: <CrimsonOSLanding gameplay={false} />}
+		{ path: '/gameplay', element: <GameplayWindow />},
+		{ path: '/login', element: <LoginWindow />}
 	])
 
 	return (

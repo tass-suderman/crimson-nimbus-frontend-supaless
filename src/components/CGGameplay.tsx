@@ -48,11 +48,6 @@ export default function CGGameplay(props)
     const [viewChar, setViewChar] = useState(false);
     
     
-    useEffect(() => {
-        
-        // Get stuff from the database.
-    }, [])
-
     //React Subcomponent for the Homepage
     function HomePage()
     {
@@ -78,7 +73,6 @@ export default function CGGameplay(props)
         const [loading, setLoading] = useState(true);
 
         useEffect(() => {
-        
             function determineCustomCharNum()
             {
                 axios.get(`${import.meta.env.VITE_REACT_APP_FETCH_BASE}/characters/user`).then(function (response)
@@ -88,9 +82,7 @@ export default function CGGameplay(props)
                     setLoading(false);
                 })
             }
-
             determineCustomCharNum();
-
         }, [])
 
 
