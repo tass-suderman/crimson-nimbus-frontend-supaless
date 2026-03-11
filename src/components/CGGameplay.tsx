@@ -81,7 +81,7 @@ export default function CGGameplay(props)
         
             function determineCustomCharNum()
             {
-                axios.get(`${process.env.REACT_APP_FETCH_BASE}/characters/user`).then(function (response)
+                axios.get(`${import.meta.env.VITE_REACT_APP_FETCH_BASE}/characters/user`).then(function (response)
                 {
                     const data= response.data.filter(char => char.isActive)
                     setCustomChar(data.length) 
@@ -170,7 +170,7 @@ export default function CGGameplay(props)
             function fetchChars()
             {
                 //fetch stuff goes here....annddddddd
-                axios.get(`${process.env.REACT_APP_FETCH_BASE}/character/newroll`).then(function (response) {
+                axios.get(`${import.meta.env.VITE_REACT_APP_FETCH_BASE}/character/newroll`).then(function (response) {
                     
                     //For buffer purposes to avoid any erros
                     const data = response.data;
@@ -207,7 +207,7 @@ export default function CGGameplay(props)
             }
 
             // After posting, inform users that they have placed their characters to the DB.
-            await axios.post(`${process.env.REACT_APP_FETCH_BASE}/character/new`, newUserData).then(() => {
+            await axios.post(`${import.meta.env.VITE_REACT_APP_FETCH_BASE}/character/new`, newUserData).then(() => {
                 setTrans('/images/loading/transmit6.png');
                 setSuccess(true);
             });
@@ -431,7 +431,7 @@ export default function CGGameplay(props)
             async function fetchBattle()
             {
                 setLoading(true);
-                axios.put(`${process.env.REACT_APP_FETCH_BASE}/character/battle/${curUserChar.id}`).then(function (response)
+                axios.put(`${import.meta.env.VITE_REACT_APP_FETCH_BASE}/character/battle/${curUserChar.id}`).then(function (response)
                 {
                             // After it calculates, it saves the results (including the two characters (you and villian)) to the state.
                             setBattle(response.data);
@@ -446,7 +446,7 @@ export default function CGGameplay(props)
 
                 // This portion fetches from the database a series of active and not killed users from the database to allow
                 // users to select a character that is alive and ready to ifght
-                axios.get(`${process.env.REACT_APP_FETCH_BASE}/characters/user`).then(function (response)
+                axios.get(`${import.meta.env.VITE_REACT_APP_FETCH_BASE}/characters/user`).then(function (response)
                 {
                     const data = response.data.filter(char => char.isActive)
                     setCharArray(data)
@@ -635,7 +635,7 @@ export default function CGGameplay(props)
                 {
                     setLoading(true);
                     
-                    await axios.put(`${process.env.REACT_APP_FETCH_BASE}/character/reroll/?charID=${curUserChar.id}&stat=${statnum}`).then(function (response)
+                    await axios.put(`${import.meta.env.VITE_REACT_APP_FETCH_BASE}/character/reroll/?charID=${curUserChar.id}&stat=${statnum}`).then(function (response)
                     {
                         setCurUserChar(response.data.c1)
                         setRefChar(response.data.c2);
@@ -974,7 +974,7 @@ export default function CGGameplay(props)
 
             async function initialScoreSet()
             {
-                axios.get(`${process.env.REACT_APP_FETCH_BASE}/characters/?sortby=wins&sortorder=DESC`).then(function (response) 
+                axios.get(`${import.meta.env.REACT_APP_FETCH_BASE}/characters/?sortby=wins&sortorder=DESC`).then(function (response) 
                 {
                     //This is for setting for local data
                     const data = response.data.filter(indEntry => indEntry.creator.userName === props.name)

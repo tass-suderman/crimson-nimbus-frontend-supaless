@@ -1,12 +1,9 @@
-
-
 @font-face {
   font-family: 'chicagoflfregular';
   src: url('../fonts/chicagoflf-webfont.woff2') format('woff2'),
        url('../fonts/chicagoflf-webfont.woff') format('woff');
   font-weight: normal;
   font-style: normal;
-
 }
 
 body {
@@ -47,14 +44,6 @@ code {
     animation: entrance-fade-in2 1.0s cubic-bezier(0.86, 0, 0.07, 1);
     animation-fill-mode: forwards;
 }
-
-/* #villian {
-  z-index: 1000;
-  position: absolute;
-  opacity: 0;
-  animation: entrance-fade-in-right 1.0s cubic-bezier(0.86, 0, 0.07, 1);
-  animation-fill-mode: forwards;
-} */
 
 #flashbang
 {
@@ -105,6 +94,3 @@ code {
     transform: translateX(80%);
   }
 } */
-
-
-

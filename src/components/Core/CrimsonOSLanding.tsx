@@ -4,7 +4,18 @@ import 'moment-timezone';
 import LoginWindow from './LoginWindow';
 import GameplayWindow from './GameplayWindow';
 import { HStack, VStack, Box, Image } from '@chakra-ui/react'
+import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
 
+export interface CrimsonOSLandingProps {
+	gameplay?: boolean;
+}
+
+interface UserInformation {
+	accessToken: string;
+	tokenType: string;
+	expiry: number;
+}
 
 const startupStyle = 
 {
@@ -12,7 +23,6 @@ const startupStyle =
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
     position: "relative",
-    
 }
 
 /**
@@ -20,11 +30,19 @@ const startupStyle =
  * Login and Gameplay Window Component....Which are basically the content of the login
  * functionality and the gameplay itself.
  */
-export default function CrimsonOSLanding(props)
+export default function CrimsonOSLanding(props: CrimsonOSLandingProps)
 {
     const [loginState, setLoginState] = useState(false);
     const [gameplayState, setGamePlayState] = useState(false);
     const [showCreds, setShowCreds] = useState(false);
+		const [cookies, setCookie] = useCookies(['user']);
+		const navigate = useNavigate();
+
+		async function loginUser(userInformation: UserInformation) {
+			const {accessToken, tokenType, expiry} = userInformation;
+			setCookie('user', {accessToken, tokenType}, {path: '/', maxAge: expiry});
+			navigate('/gameplay');
+		}
  
     useEffect(() => {
         if (props.gameplay)
@@ -40,7 +58,9 @@ export default function CrimsonOSLanding(props)
 
 
     return (
-       <Container maxW="100%" h={"100vh"} padding={'0'} style={startupStyle}>
+			<>
+			{/*
+       <Container maxW="100%" h={"100vh"} padding={'0'} sx={startupStyle}>
             <Text as='button' fontSize={'lg'} pos="absolute" top={'5px'} left={'70px'} onClick={() => {showCreds ? setShowCreds(false) : setShowCreds(true)}}>Crimson OS Credits</Text>
             {
                 showCreds &&
@@ -69,9 +89,14 @@ export default function CrimsonOSLanding(props)
                 </div>
             }
             <Container maxW="100%" h={"100vh"} padding={'0'} style={{backgroundImage: `url("/images/background/crimsonui3.png")`, backgroundRepeat: "no-repeat", backgroundSize: "contain"}}  >
-                {loginState && <LoginWindow getUserData={props.getUserData}/>}
+						*/}
+                {loginState && <LoginWindow getUserData={loginUser}/>}
                 {gameplayState && <GameplayWindow/>}
+
+								{/*
             </Container>
        </Container>
+			 */}
+			 </>
     )
 }

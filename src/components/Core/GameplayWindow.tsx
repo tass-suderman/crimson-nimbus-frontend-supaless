@@ -3,6 +3,12 @@ import { Container, Text, Image } from '@chakra-ui/react';
 import CGGameplay from '../CGGameplay';
 import axios from 'axios';
 import {useCookies} from 'react-cookie'
+import { useNavigate } from 'react-router-dom';
+
+interface UserProfile {
+	userName?: string;
+	avatar?: string;
+}
 
 /**
  * This React Component serves as the main handler of the CGGameplay Component which contains the logic and animation for our battle and character selecting.
@@ -14,30 +20,29 @@ import {useCookies} from 'react-cookie'
 export default function GameplayWindow()
 {
     const [loading, setLoading] = useState(true)
-    const [userProfile, setProfile] = useState({})
+    const [userProfile, setProfile] = useState({} as UserProfile)
     const [cookies] = useCookies();
+		const navigate = useNavigate();
 
     async function getUserInformation(){
 
         const {tokenType,accessToken} = cookies.user;
         if(!accessToken||!tokenType){
             cookies.remove('user')
-            window.location='/login'
+						navigate('/login')
         }
         else {
             axios.defaults.headers.common['Authorization'] = `${tokenType} ${accessToken}`
-            const discordRes = await axios.post(`${process.env.REACT_APP_FETCH_BASE}/login`);
+            const discordRes = await axios.post(`${import.meta.env.VITE_REACT_APP_FETCH_BASE}/login`);
             if (discordRes.status !== 200) {
                 cookies.remove('user')
-                window.location = '/login'
+								navigate('/login')
             }
             else{
                 setProfile(discordRes.data)
                 setLoading(false)
             }
         }
-
-
     }
 
     useEffect(() => {
@@ -47,15 +52,12 @@ export default function GameplayWindow()
     })
         return(
             <Container maxW="100%" h={"100vh"}>
-                { loading && 
-                
+                {loading && 
                     <div style={{display: "flex", gap: "20px", alignItems:"center", justifyContent: "center", position: "absolute", top: "35%", left: "32%", zIndex: 100}}>
                         <img src='/images/loading/crimsonos_retrieving.gif' alt=""/>
                     </div>
-                
                 }
-
-                {!loading &&
+                {/*!loading &&
                     <div left={'15px'} style={{minWidth: "250px",
                         minHeight: "200px",
                         padding: "13px",
@@ -74,7 +76,7 @@ export default function GameplayWindow()
 
                         <img src='/images/background/crimsonuser.png' alt=""/>
                     </div>
-                }
+                */}
                 <CGGameplay name={userProfile.userName}/>
             </Container>
             

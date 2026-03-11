@@ -10,24 +10,17 @@ const startupStyle =
     position: "relative"
 }
 
-/**
- * This React component just emulates a mock MacOs like startup sequence.
- * This mostly runs for like 3 seconds before handling off to the login page.
- * @returns
- */
-export default function CrimsonOSMockStartup()
-{
-
+const CrimsonOSMockStartup = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
         setInterval(() => {
-            navigate('login');
+            navigate('/login');
         }, 3000)
     }, [navigate])
 
         return (
-            <Container maxW="100%" h={"100vh"} padding={'0'} style={startupStyle}>
+            <Container maxW="100%" h={"100vh"} padding={'0'} sx={startupStyle}>
                 <Flex w={"100vw"} height={"100vh"} alignContent={"center"} justifyContent={"center"}>
                     <Center>
                         <VStack>
@@ -38,9 +31,6 @@ export default function CrimsonOSMockStartup()
                 </Flex>
             </Container>
         )
-        
-
-    
-
-
 }
+
+export default CrimsonOSMockStartup;
